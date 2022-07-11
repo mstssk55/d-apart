@@ -17,7 +17,7 @@ class CreateStationsTable extends Migration
             $table->id();
             $table->string('route',128);
             $table->string('station',128);
-            $table->string('time',128);
+            $table->integer('time')->nullable();
             $table->foreignId('property_id')->constrained();
             $table->timestamps();
         });

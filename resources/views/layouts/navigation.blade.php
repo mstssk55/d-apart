@@ -15,6 +15,10 @@
                     <x-nav-link :href="route('propertyNew')" :active="request()->routeIs('propertyNew')">
                         {{ __('新規物件作成') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('setting')" :active="request()->routeIs('setting')">
+                        {{ __('設定') }}
+                    </x-nav-link>
+
 
                 </div>
             </div>

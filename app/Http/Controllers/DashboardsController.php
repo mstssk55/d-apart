@@ -14,7 +14,7 @@ class DashboardsController extends Controller
     public function dashboard()
     {
         //
-        $properties = Property::get();
+        $properties = Property::orderBy('created_at', 'DESC')->get();
         $projects = Project::orderBy('updated_at', 'DESC')->take(5)->get();;
         return view('dashboard')->with([
             'properties' => $properties,

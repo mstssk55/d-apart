@@ -18,8 +18,8 @@ class CreatePropertiesTable extends Migration
             $table->string('name',128);
             $table->string('address',128)->nullable();
             $table->string('category',128)->nullable();
-            $table->date('open_date',128)->nullable();
-            $table->date('start_date',128)->nullable();
+            // $table->date('open_date',128)->nullable();
+            // $table->date('start_date',128)->nullable();
             $table->float('land_area')->nullable();
             $table->string('ground',128)->nullable();
             $table->string('city_planning',128)->nullable();

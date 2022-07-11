@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\Property;
+use App\Models\User;
+use App\Models\Construction;
+use App\Models\Layout;
 use Validator;
 use App\Models\Parking;
 use App\Models\Plan;
@@ -80,6 +83,9 @@ class ProjectController extends Controller
     {
         //
         $project = Project::find($id);
+        $users = User::get();
+        $crs = Construction::get();
+        $layouts = Layout::get();
         // if (is_null($building_detail)) {
         //     \Session::flash('err_msg', 'データがありません。');
         //     return redirect(route('buildings'));
@@ -87,6 +93,9 @@ class ProjectController extends Controller
 
         return view('project.detail')->with([
             'project' => $project,
+            'users'=> $users,
+            'crs' => $crs,
+            'layouts'=> $layouts,
         ]);
 
 
@@ -126,17 +135,28 @@ class ProjectController extends Controller
         }
         $project = Project::find($request->id);
 
+
+        // 収支計画基本情報-----------------------------------------
+        $project->name = $request->name;
+        $project->client = $request->client;
+        $project->manager = $request->manager;
+        $project->house_name = $request->house_name;
+        $project->open_date = $request->open_date;
+        $project->start_date = $request->start_date;
+
         // 建築プラン-----------------------------------------
         $project->plan_kind =  $request->plan_kind;
-        $project->household = $request->household;
         $project->structure = $request->structure;
         $project->floor = $request->floor;
         $project->equipment = $request->equipment;
-        $project->plan_basement_area = $request->plan_basement_area;
-        $project->plan_tenant_area = $request->plan_tenant_area;
-        $project->plan_room_area = $request->plan_room_area;
-        $project->plan_total_area = $request->plan_total_area;
 
+        // $project->household = $request->household;
+        // $project->plan_basement_area = $request->plan_basement_area;
+        // $project->plan_tenant_area = $request->plan_tenant_area;
+        // $project->plan_room_area = $request->plan_room_area;
+        // $project->plan_total_area = $request->plan_total_area;
+
+        // 間取り-----------------------------------------
         $del_plans = Plan::where("project_id",$request->id)->delete();
         for($i = 0;$i<$request->count_room_plan + 1;$i++){
             $count = $i;
@@ -151,6 +171,7 @@ class ProjectController extends Controller
                 $count ++;
             }
         }
+        // 駐車場-----------------------------------------
         $del_parkings = Parking::where("project_id",$request->id)->delete();
         for($i = 0;$i<$request->count_parking_plan + 1;$i++){
             $count = $i;
@@ -168,10 +189,16 @@ class ProjectController extends Controller
                 $count ++;
             }
         }
-
         // 販売価格-----------------------------------------
         $project->price_land =  $request->price_land;
         $project->price_prop = $request->price_prop;
+
+
+        // 固定資産税評価額-----------------------------------------
+        $project->estate_tax_jutaku =  $request->estate_tax_jutaku;
+        $project->property_tax_area =  $request->property_tax_area;
+        $project->property_tax_prop = $request->property_tax_prop;
+
 
         // 賃金、借入金内訳-----------------------------------------
         $project->debt =  $request->debt;
@@ -184,12 +211,8 @@ class ProjectController extends Controller
         $project->total_expenses = $request->total_expenses;
         $project->monthly_repayment_amount = $request->monthly_repayment_amount;
 
-        // 固定資産税評価額-----------------------------------------
-        $project->property_tax_area =  $request->property_tax_area;
-        $project->property_tax_prop = $request->property_tax_prop;
 
         // 不動産取得税-----------------------------------------
-        $project->estate_tax_jutaku =  $request->estate_tax_jutaku;
         $project->estate_tax_shintiku = $request->estate_tax_shintiku;
         $project->estate_tax_area = $request->estate_tax_area;
         $project->estate_tax_prop = $request->estate_tax_prop;

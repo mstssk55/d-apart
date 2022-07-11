@@ -16,13 +16,33 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name',128);
+            $table->string('client',128)->nullable();
+            $table->integer('manager')->nullable();
+            $table->string('house_name',128)->nullable();
+            $table->date('open_date',128)->nullable();
+            $table->date('start_date',128)->nullable();
 
             // 建築プラン-----------------------------------------
             $table->string('plan_kind')->nullable();
-            $table->integer('household')->nullable();
             $table->string('structure')->nullable();
             $table->integer('floor')->nullable();
             $table->string('equipment')->nullable();
+
+            // 販売価格-----------------------------------------
+            $table->integer('price_land')->nullable();
+            $table->integer('price_prop')->nullable();
+
+            // フロア-----------------------------------------
+
+            // 固定資産税評価額-----------------------------------------
+            $table->string('estate_tax_jutaku')->nullable();
+            $table->integer('property_tax_area')->nullable();
+            $table->integer('property_tax_prop')->nullable();
+
+
+
+            // 削除?-----------------------------------------
+            $table->integer('household')->nullable();
             $table->float('plan_basement_area')->nullable();
             $table->float('plan_tenant_area')->nullable();
             $table->float('plan_room_area')->nullable();
@@ -40,11 +60,8 @@ class CreateProjectsTable extends Migration
             $table->integer('monthly_repayment_amount')->nullable();
 
             // 固定資産税評価額-----------------------------------------
-            $table->integer('property_tax_area')->nullable();
-            $table->integer('property_tax_prop')->nullable();
 
             // 不動産取得税-----------------------------------------
-            $table->string('estate_tax_jutaku')->nullable();
             $table->string('estate_tax_shintiku')->nullable();
             $table->integer('estate_tax_area')->nullable();
             $table->integer('estate_tax_prop')->nullable();
@@ -67,9 +84,6 @@ class CreateProjectsTable extends Migration
             $table->integer('earthquake_insurance_year')->nullable();
             $table->integer('earthquake_insurance_cost')->nullable();
 
-            // 販売価格-----------------------------------------
-            $table->integer('price_land')->nullable();
-            $table->integer('price_prop')->nullable();
 
             $table->foreignId('user_id')->constrained();
             $table->foreignId('property_id')->constrained();

@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertiesController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\DashboardsController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ConstructionsController;
+use App\Http\Controllers\LayoutsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +38,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/property/list', [PropertiesController::class, 'index'])
     ->name('propertyList');
 
+    //詳細画面
+    Route::get('/property/detail/{id}', [PropertiesController::class, 'show'])
+    ->name('propertyDetail');
+
+    //更新処理
+    Route::post('/property/update', [PropertiesController::class, 'update'])
+    ->name('propertyUpdate');
+
+
 
     // 収支計画-----------------------------------------------------------
     //登録画面
@@ -60,6 +73,33 @@ Route::group(['middleware' => 'auth'], function () {
     //ダッシュボード
     Route::get('/', [DashboardsController::class, 'dashboard'])
     ->name('dashboard');
+
+    //設定ページ
+    Route::get('/setting', [SettingController::class, 'setting'])
+    ->name('setting');
+
+    //登録処理
+    Route::post('/construction/store', [ConstructionsController::class, 'store'])
+    ->name('constructionStore');
+    //削除処理
+      // 削除
+    Route::delete('/construction/delete/{id}', [ConstructionsController::class, 'destroy'])
+    ->name('constructionDelete');
+
+    //登録処理
+    Route::post('/layout/store', [LayoutsController::class, 'store'])
+    ->name('layoutStore');
+    //削除処理
+        // 削除
+    Route::delete('/layout/delete/{id}', [LayoutsController::class, 'destroy'])
+    ->name('layoutDelete');
+
+
+
+
+
+
+
 
 
 });

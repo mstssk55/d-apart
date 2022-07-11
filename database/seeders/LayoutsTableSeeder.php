@@ -1,11 +1,11 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\Property;
+use App\Models\Layout;
 
 use Illuminate\Database\Seeder;
 
-class PropertiesTableSeeder extends Seeder
+class LayoutsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,11 +15,10 @@ class PropertiesTableSeeder extends Seeder
     public function run()
     {
         //
-        $property = new Property([
-            'name' => '中央区南8条アパート',
-            'user_id' => 1,
+        $layout = new Layout([
+            'name' => '１LDK',
             ]);
-        $property->save();
+        $layout->save();
 
     }
 }

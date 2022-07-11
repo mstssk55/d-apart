@@ -1,1 +1,3 @@
-<h2 class="bg-cyan-100 text-base mb-3 py-1">{{$title}}</h2>
+<div class="w-full bg-sky-100 text-sm py-2 px-1 rounded-sm mb-2" id="bukkenn-gaiyou">
+    <h2>{{$title}}</h2>
+</div>

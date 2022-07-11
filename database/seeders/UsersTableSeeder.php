@@ -21,6 +21,18 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('testtest'),
             ]);
         $user->save();
+        $user = new \App\models\User([
+            'name' => '佐藤',
+            'email' => 'test1@test.com',
+            'password' => Hash::make('testtest'),
+            ]);
+        $user->save();
 
+        $user = new \App\models\User([
+            'name' => '田村',
+            'email' => 'tes2@test.com',
+            'password' => Hash::make('testtest'),
+            ]);
+        $user->save();
     }
 }

@@ -122,7 +122,7 @@
                                 @foreach ($properties as $property)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <a class="block" href="{{ route('projectDetail', ['id' => $property->id]) }}">
+                                        <a class="block" href="{{ route('propertyDetail', ['id' => $property->id]) }}">
                                             <p>{{$property->name}}</p>
                                         </a>
                                     </td>

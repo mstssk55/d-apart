@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoadsTable extends Migration
+class CreateConstructionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateRoadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('roads', function (Blueprint $table) {
+        Schema::create('constructions', function (Blueprint $table) {
             $table->id();
-            $table->string('road_kind',128);
-            $table->string('direction',128);
-            $table->integer('length')->nullable();
-            $table->foreignId('property_id')->constrained();
+            $table->string('name',128);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateRoadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roads');
+        Schema::dropIfExists('constructions');
     }
 }
