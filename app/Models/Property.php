@@ -23,6 +23,10 @@ class Property extends Model
     {
         return $this->hasMany(Road::class);
     }
+    public function projects()
+    {
+      return $this->hasMany(Project::class);
+    }
 
 
 }

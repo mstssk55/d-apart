@@ -10,7 +10,7 @@
         <textarea name="{{$name}}" cols="30" rows="10"  class="w-4/5 rounded text-sm border-gray-400">{{$val}}</textarea>
     @elseif (isset($type) && $type === 'number')
         <div class="w-4/5 flex items-center">
-            <input name="{{$name}}" type="number" id="{{$name}}" class="rounded mr-3 text-sm border-gray-400" value="{{$val}}">
+            <input name="{{$name}}" type="number" id="{{$name}}" class="rounded mr-3 text-sm border-gray-400" value="{{$val}}" step="0.01">
             <span class="mr-5">㎡</span>
             <div class="land_area_tubo w-1/5 text-right mr-1"></div>
             <span>坪</span>

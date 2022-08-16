@@ -17,7 +17,7 @@ class CreateRoadsTable extends Migration
             $table->id();
             $table->string('road_kind',128);
             $table->string('direction',128);
-            $table->integer('length')->nullable();
+            $table->float('length')->nullable();
             $table->foreignId('property_id')->constrained();
             $table->timestamps();
         });

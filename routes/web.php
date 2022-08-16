@@ -7,7 +7,8 @@ use App\Http\Controllers\DashboardsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ConstructionsController;
 use App\Http\Controllers\LayoutsController;
-
+use App\Http\Controllers\ConstructionPlansController;
+use App\Http\Controllers\BanksController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,6 +70,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/list', [ProjectController::class, 'index'])
     ->name('projectList');
 
+    //収支計画
+    Route::get('/plan/{id}', [ProjectController::class, 'plan'])
+    ->name('projectPlan');
+
+    //PDF
+    Route::get('/pdf/{id}', [ProjectController::class, 'pdf'])
+    ->name('projectPdf');
+
+
 
     //ダッシュボード
     Route::get('/', [DashboardsController::class, 'dashboard'])
@@ -94,10 +104,29 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/layout/delete/{id}', [LayoutsController::class, 'destroy'])
     ->name('layoutDelete');
 
+    //登録処理
+    Route::post('/constructionPlan/store', [ConstructionPlansController::class, 'store'])
+    ->name('constructionPlanStore');
+    //削除処理
+        // 削除
+    Route::delete('/constructionPlan/delete/{id}', [ConstructionPlansController::class, 'destroy'])
+    ->name('constructionPlanDelete');
+
+    //登録処理
+    Route::post('/bank/store', [BanksController::class, 'store'])
+    ->name('bankStore');
+    //削除処理
+        // 削除
+    Route::delete('/bank/delete/{id}', [BanksController::class, 'destroy'])
+    ->name('bankDelete');
 
 
 
 
+
+    Route::get('/hello', function () {
+        return PDF::loadHTML('<h1>Hello!</h1>')->inline();
+    });
 
 
 

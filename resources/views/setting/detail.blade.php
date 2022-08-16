@@ -55,8 +55,53 @@
                                             @endforeach
                                         </div>
                                     </div>
+                                    <div class="w-1/4 mr-3">
+                                        @include('parts.project.h3',['title'=>'建築プラン:種類'])
+                                        <form action="{{route('constructionPlanStore')}}" method="POST" class="mt-2 mb-4">
+                                            {{ csrf_field() }}
+                                            <input type="text" name="constructionplan" class="rounded mr-3 text-sm border-gray-400">
+                                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">追加</button>
+                                        </form>
+                                        <div>
+                                            @foreach ($cr_plans as $cr_plan)
+                                                <div class="flex items-center justify-between border-b pb-1 mb-1">
+                                                    <p>{{$cr_plan->name}}</p>
+                                                    <form action="{{route('constructionPlanDelete',['id'=>$cr_plan->id])}}" method="POST">
+                                                        {{ csrf_field() }}
+                                                        {{ method_field('DELETE') }}
+                                                        <button type="submit" class="ml-1 text-xs">削除</button>
+                                                    </form>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
 
                                 </div>
+                                <div class="flex mt-5">
+                                    <div class="w-1/4 mr-3">
+                                        @include('parts.project.h3',['title'=>'銀行'])
+                                        <form action="{{route('bankStore')}}" method="POST" class="mt-2 mb-4">
+                                            {{ csrf_field() }}
+                                            <input type="text" name="bank_name" placeholder="銀行名" class="rounded mr-3 text-sm border-gray-400">
+                                            <input type="number" step="0.01" name="bank_ratio" placeholder="利率" class="rounded mr-3 text-sm border-gray-400">
+                                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">追加</button>
+                                        </form>
+                                        <div>
+                                            @foreach ($banks as $bank)
+                                                <div class="flex items-center justify-between border-b pb-1 mb-1">
+                                                    <p>{{$bank->name}}</p>
+                                                    <p>：{{$bank->ratio}}%</p>
+                                                    <form action="{{route('bankDelete',['id'=>$bank->id])}}" method="POST">
+                                                        {{ csrf_field() }}
+                                                        {{ method_field('DELETE') }}
+                                                        <button type="submit" class="ml-1 text-xs">削除</button>
+                                                    </form>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {{-- <form  action={{route('propertyStore')}} method="POST">
                                     {{ csrf_field() }}
                                     @include('parts.property.col1',['title'=>'物件名','name'=>'name'])

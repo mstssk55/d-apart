@@ -15,7 +15,8 @@ class DashboardsController extends Controller
     {
         //
         $properties = Property::orderBy('created_at', 'DESC')->get();
-        $projects = Project::orderBy('updated_at', 'DESC')->take(5)->get();;
+        $projects = Project::orderBy('updated_at', 'DESC')->take(5)->get();
+        session()->put(['scroll_top' => 0]);
         return view('dashboard')->with([
             'properties' => $properties,
             'projects' => $projects,

@@ -20,6 +20,7 @@ class CreateRoomsTable extends Migration
             $table->float('room_area')->nullable();
             $table->integer('room_rent')->nullable();
             $table->integer('room_common')->nullable();
+            $table->integer('room_other')->nullable();
             $table->foreignId('project_id')->constrained();
             $table->timestamps();
         });

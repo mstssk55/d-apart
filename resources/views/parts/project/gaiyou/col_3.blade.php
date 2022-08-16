@@ -5,8 +5,10 @@
             @foreach ($parking_item_list as $item)
                 @php
                     $selected = "";
-                    if($item == $parking->plan){
-                        $selected = "selected";
+                    if(isset($parking)){
+                        if($item == $parking->plan){
+                            $selected = "selected";
+                        }
                     }
                 @endphp
                 <option value="{{$item}}" {{$selected}}>{{$item}}</option>

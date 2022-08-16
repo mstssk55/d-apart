@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PropertiesTableSeeder::class);
         $this->call(ConstructionsTableSeeder::class);
         $this->call(LayoutsTableSeeder::class);
-
+        $this->call(BanksTableSeeder::class);
 
     }
 }

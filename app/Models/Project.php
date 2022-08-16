@@ -37,6 +37,31 @@ class Project extends Model
       return $this->hasMany(Park::class);
     }
 
+    public function floors()
+    {
+      return $this->hasMany(Floor::class);
+    }
+
+    public function others()
+    {
+      return $this->hasMany(Other::class);
+    }
+    public function bikous()
+    {
+      return $this->hasMany(Bikou::class);
+    }
+    public static function bikous_kind($kind,$project_id)
+    {
+        return Bikou::query()
+        ->where([
+            ['project_id', '=', $project_id],
+            ['kind', '=', $kind]
+        ])
+        ->get();
+    }
+
+
+
 
 
 

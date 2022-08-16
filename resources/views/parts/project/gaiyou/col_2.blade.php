@@ -6,12 +6,15 @@
         $check = $project->$name1;
     }else{
         $selectbox = $layouts;
-        $check = $plan->plan;
+        if(isset($plan)){
+            $check = $plan->plan;
+        }
     }
 @endphp
+
 <div class="flex items-center h-full">
     <div class="w-3/5 h-full border-r border-gray-300">
-        <select name="{{$name1}}" id="" class="border-none w-full bg-sky-50">
+        <select name="{{$name1}}" id="{{$name1}}" class="border-none w-full bg-sky-50">
             <option value="">選択して下さい</option>
             @foreach ($selectbox as $item)
                 @php

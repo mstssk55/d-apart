@@ -2,4 +2,248 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+.project_button{
+    padding: 10px 50px;
+    color: #fff;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+.table_outline{
+    border: 2px solid #555555 !important;
+    border-bottom: none !important;
+    white-space: nowrap;
+}
+.table_under_line{
+    border-bottom: 2px solid #555555 !important;
+}
+.fixed01,
+.fixed02{
+  position: sticky;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background: #333;
+}
+.fixed01{
+    z-index: 2;
+  }
+  .fixed02{
+    z-index: 1;
+  }
 
+.border_inner{
+    border: #999999 1px solid;
+}
+.border_top_none{
+    border-top: none !important;
+}
+.border_bottom_none{
+    border-bottom: none !important;
+}
+.plan_flex{
+    display: -webkit-box; /* 追加 */
+    -webkit-box-pack: center; /* 追加 */
+    justify-content: center;
+
+}
+.pdf_main{
+    display: -webkit-box; /* 追加 */
+    -webkit-box-pack: flex-start; /* 追加 */
+    justify-content: flex-start;
+    display: flex;
+
+}
+.pdf_haed{
+    width: 100%;
+    display: -webkit-box; /* 追加 */
+    -webkit-box-pack: space-between; /* 追加 */
+    justify-content: space-between;
+
+}
+
+.pdf_haed .flex{
+    display: -webkit-box; /* 追加 */
+    -webkit-box-pack: space-between; /* 追加 */
+    justify-content: space-between;
+
+}
+
+.pdf_page{
+    page-break-after: always;
+    page-break-inside: avoid;
+
+}
+.pdf_main h2{
+    text-align: center;
+    font-size: 18px !important;
+    background-color: #eeeeee;
+    padding: 5px 0;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.pdf_main h3{
+    font-size: 16px !important;
+    font-weight: bold;
+    margin-top: 5px !important;
+}
+
+.pdf_table_gaiyou{
+    width: 38%;
+    margin-right: 1%;
+}
+.pdf_table_kiso{
+    width: 30%;
+    margin-right: 1%;
+
+}
+.pdf_table_fee{
+    width: 30%;
+}
+.pdf_table_jigyou{
+    width: 49.5%;
+    margin-right: 1%;
+
+}
+.pdf_table_jigyou_flex{
+    display: -webkit-box; /* 追加 */
+    -webkit-box-pack: flex-start; /* 追加 */
+    justify-content: flex-start;
+    display: flex;
+    width: 100%;
+}
+.pdf_table_sammary{
+    width: 60%;
+    margin-right: 1%;
+}
+
+.pdf_table_sammary_price{
+    width: 39%;
+}
+
+.pdf_table th{
+    text-align: left;
+    border: 1px solid #555555;
+    font-weight: normal;
+    background-color: #eeeeee;
+}
+.pdf_table td{
+    text-align: left;
+    border: 1px solid #555555;
+    padding-left: 10px;
+}
+.pdf_table_gai th{
+    width: 25%;
+}
+.pdf_table_gai td{
+    width: 25%;
+}
+
+.pdf_table_kentiku th{
+    width: 25%;
+}
+.pdf_table_kentiku td{
+    width: 37.5%;
+}
+.pdf_table_yatin th{
+    width: 25%;
+}
+.pdf_table_yatin td{
+    width: 25%;
+}
+
+.pdf_table_kiso th{
+    width: 35%;
+}
+.pdf_table_kiso td{
+    width: 65%;
+}
+
+
+.kentiku_area span:first-child{
+    margin-right: 30px;
+}
+.kentiku_area span:nth-child(2){
+    margin-right: 30px;
+}
+.bb_none{
+    border-bottom: none !important;
+    border-top: 1px solid #999999;
+
+}
+
+.page_2{
+    width: 100%;
+}
+.page_2 th{
+    width: 12%;
+}
+.page_2 td{
+    width: 21%;
+}
+
+.b-none{
+    border: none !important;
+}
+
+
+
+
+
+
+
+.plan_table{
+    display: flex;
+}
+.plan_table p{
+    width: 130px;
+    text-align: center;
+    padding: 3px 0;
+}
+.plan_table_head p{
+    background-color: #eeeeee;
+
+}
+.plan_bt_b{
+    border-top: #999999 solid 2px;
+}
+.plan_bb_r{
+    border-bottom: #999999 solid 1px;
+}
+.plan_bb_b{
+    border-bottom: #999999 solid 2px;
+
+}
+.plan_bx_b{
+    border-left: #999999 solid 2px;
+    border-right: #999999 solid 2px;
+
+}
+
+.plan_table p{
+    border-left: #999999 solid 1px;
+    /* border: #999999 solid 2px; */
+}
+.plan_table p:first-child{
+    border-left: none;
+    /* border: #999999 solid 2px; */
+}
+.plan_table p:nth-child(2){
+    border-left: none;
+    /* border: #999999 solid 2px; */
+}
+.plan_table p:nth-child(3){
+    border-left: #999999 solid 2px;
+    margin-left: 260px;
+    /* border: #999999 solid 2px; */
+}
+
+.plan_table_fix_left_1 ,.plan_table_fix_left_2{
+    position: fixed;
+}
+
+
+.plan_table_wrapper{
+    overflow-x: scroll;
+    display: flex;
+}
