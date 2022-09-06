@@ -65,7 +65,7 @@
             $floor_total_area += $floor->tenant_area + $floor->house_area;
         }
 
-        function total_fee($array,$val,$type= "room"){
+        function total_fee($array,$val,$type= "room",$cycle = ""){
             $cost = 0;
             foreach ($array as $fee) {
                 if($type == "room"){
@@ -73,6 +73,10 @@
                 }else if($type == "park"){
                     $park = $fee->$val;
                     $cost += $park * $fee->count;
+                }else if($type == "other_fee"){
+                    if($fee->cycle == $cycle){
+                        $cost += $fee->$val;
+                    }
                 }
             }
             return $cost;
@@ -99,8 +103,9 @@
         $syohiyou += $project->loan_fees;
         $syohiyou += $project->loan_guarantee_fee;
         $syohiyou += $project->brokerage_fee;
-        $syohiyou += $project->housing_insurance_cost;
-        $syohiyou += $project->earthquake_insurance_cost;
+        $syohiyou += total_fee($project->others,"fee","other_fee","1回限り");
+        // $syohiyou += $project->housing_insurance_cost;
+        // $syohiyou += $project->earthquake_insurance_cost;
 
         $jigyou_total_area_fee = 0;
         $jigyou_total_area_fee_tax = 0;
@@ -445,7 +450,7 @@
                                 </tr>
                                 <tr>
                                     <th>月額返済額</th>
-                                    <td>{{number_format($project->interest_rate)}}<span>円</span></td>
+                                    <td>{{number_format($project->monthly_repayment_amount)}}<span>円</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -930,6 +935,33 @@
                     }
                     return $values;
                 }
+                function calc_zero($item){
+                    $val = 1;
+                    if($item>0){
+                        $val = $item;
+                    }
+                    return $val;
+                }
+                function hoken($type,$project,$roop){
+                    $year = $type.'_year';
+                    $cost = $type.'_cost';
+                    $array = [];
+                    if($project->$year != 0 && $project->$cost != 0){
+                        $array = roop_val($project->$cost / $project->$year,$roop);
+                    }else{
+                        $array = roop_val(0,$roop);
+                    }
+                    return $array;
+                }
+                function calc_zan($zan,$item){
+                    $val = $item;
+                    if($zan < $item && $zan > 0){
+                        $val = $zan;
+                    }elseif($zan == 0){
+                        $val = 0;
+                    }
+                    return $val;
+                }
                 $start_month = date('n',strtotime($project->project_start_date));
                 $after_start = $start_month + $project->deferred_period -1;
                 $after_start_cost = 12 - $start_month +1;
@@ -939,7 +971,12 @@
                 $equipment_price = round($project->equipment_ratio/100 * $project->price_prop *1.1);
                 $prop_price = $project->price_prop - $equipment_price;
                 $geturi = $project->interest_rate /100 /12;
-
+                $zandaka = $project->debt;
+                $loop_count = 0;
+                $zan_hoken_h = $project->housing_insurance_cost;
+                $zan_hoken_e = $project->earthquake_insurance_cost;
+                $zan_genka_p = $project->building_depreciation_ratio * $prop_price * $project->building_depreciation_year;
+                $zan_genka_e = $project->equipment_depreciation_ratio * $equipment_price * $project->equipment_depreciation_year;
 
             @endphp
             @for ($c = 0;$c<4;$c++)
@@ -964,12 +1001,12 @@
                         $toshikeikaku_m = roop_val($project->city_planning_tax,$roop);
                         $genka_p = roop_val($project->building_depreciation_ratio * $prop_price,$roop);
                         $genka_e = roop_val($project->equipment_depreciation_ratio * $equipment_price,$roop);
-                        $loan = [];
-                        for($b = 0;$b<$roop;$b++){
-                            $project_debt = $project_debt - $b;
-                            array_push($loan,$project_debt);
-                        }
-                        if($count == 0){
+                        $hoken_h = hoken("housing_insurance",$project,$roop);
+                        $hoken_e = hoken("earthquake_insurance",$project,$roop);
+                        $hoken = [];
+                        $sonota = roop_val(total_fee($project->others,"fee","other_fee","毎年"),$roop);
+
+                        if($loop_count == 0){
                             if($after_start < 12){
                                 $yatin_y[0] = $total_fee_all * (12 - $after_start);
                                 $hensai_m[0] = $project->debt * $geturi;
@@ -984,54 +1021,124 @@
                             $clean_y[0] =$clean_m[0] * $after_start_cost;
                             $net_y[0] =$net_m[0] * $after_start_cost;
                             $furikomi_y[0] =$furikomi_m[0] * $after_start_cost;
-                            $koteisisan_m[0] = $koteisisan_m[0]/365*$diff_days;
-                            $toshikeikaku_m[0] = $toshikeikaku_m[0]/365*$diff_days;
+                            $koteisisan_m[0] = $koteisisan_m[0]/calc_zero(365*$diff_days);
+                            $toshikeikaku_m[0] = $toshikeikaku_m[0]/calc_zero(365*$diff_days);
                             $genka_p[0] =$genka_p[0] /12 * $after_start_cost;
                             $genka_e[0] =$genka_e[0] /12 * $after_start_cost;
+                            $sonota[0] += $syohiyou;
+                            $hoken_h[0] =$hoken_h[0] /12 * $after_start_cost;
+                            $hoken_e[0] =$hoken_e[0] /12 * $after_start_cost;
 
 
                         }
                         $nyukin_m = [];
                         $nyukin_y = [];
+
+                        $kinnri = roop_val(0,$roop);
+                        $gankin = roop_val(0,$roop);
+                        $loan_zan = roop_val($zandaka,$roop);
+                        for($l = 0;$l<$roop;$l++){
+                            $l_month = 12;
+                            if($zandaka == 0){
+                                $hensai_m[$l] = 0;
+                                $hensai_y[$l] = 0;
+                            }elseif($zandaka>0 && $zandaka <= $project->monthly_repayment_amount * 12){
+                                $hensai_y[$l] = $zandaka;
+                            }
+                            if($c == 0 && $l ==0){
+                                $l_month = $after_start_cost;
+                            }
+                            for($p = 0;$p<$l_month;$p++){
+                                if($c == 0 && $l ==0 && $p < $project->deferred_period){
+                                    $kinnri[$l] += round($project->debt * $geturi);
+                                }else{
+                                    if($zandaka > $project->monthly_repayment_amount){
+                                        $calc_kinnri = round($zandaka * $geturi);
+                                        $calc_gankin = round($project->monthly_repayment_amount - $calc_kinnri);
+                                    }elseif($zandaka > 0 && $zandaka <=$project->monthly_repayment_amount){
+                                        $calc_kinnri = round($zandaka * $geturi);
+                                        $calc_gankin = $zandaka - $calc_kinnri;
+                                    }elseif($zandaka ==0){
+                                        $calc_kinnri = 0;
+                                        $calc_gankin = 0;
+                                    }
+                                    $kinnri[$l] += $calc_kinnri;
+                                    $gankin[$l] += $calc_gankin;
+                                    $loan_zan[$l] -= $calc_gankin;
+                                    $zandaka -= $calc_gankin;
+
+                                }
+                                if($l != 9){
+                                    $loan_zan [$l +1 ] = $zandaka;
+                                }
+                            }
+                            if($zandaka == 0){
+                                $hensai_y[$l] += $kinnri[$l];
+                            }
+                        }
+
+                        $kinnri_a = [];
+                        $kinnri_p = [];
+                        $keihi = [];
+                        $soneki = [];
+                        $ratio_a = $project->price_land/calc_zero($project->price_land + $project->price_prop);
+                        $ratio_p = 1 - $ratio_a;
+
                         for($a = 0;$a<$roop; $a++){
                             array_push($nyukin_m,$yatin_m[$a]-$hensai_m[$a]-$kanri_m[$a]-$electric_m[$a]-$clean_m[$a]-$net_m[$a]-$furikomi_m[$a]);
                             array_push($nyukin_y,$yatin_y[$a]-$hensai_y[$a]-$kanri_y[$a]-$electric_y[$a]-$clean_y[$a]-$net_y[$a]-$furikomi_y[$a]);
+                            array_push($kinnri_a,$kinnri[$a]*$ratio_a);
+                            array_push($kinnri_p,$kinnri[$a]*$ratio_p);
+                            $hoken_h[$a] = calc_zan($zan_hoken_h,$hoken_h[$a]);
+                            $hoken_e[$a] = calc_zan($zan_hoken_e,$hoken_e[$a]);
+                            $genka_p[$a] = calc_zan($zan_genka_p,$genka_p[$a]);
+                            $genka_e[$a] = calc_zan($zan_genka_e,$genka_e[$a]);
+
+                            array_push($hoken,$hoken_h[$a] + $hoken_e[$a]);
+                            array_push($keihi,$kanri_y[$a]+$electric_y[$a]+$clean_y[$a]+$net_y[$a]+$furikomi_y[$a]+$koteisisan_m[$a]+$toshikeikaku_m[$a]+$genka_p[$a]+$genka_e[$a]+$hoken[$a]+$kinnri[$a]+$sonota[$a]);
+                            array_push($soneki,$yatin_y[$a]-$keihi[$a]);
+                            $loop_count ++;
+                            $zan_hoken_h -= round($hoken_h[$a]);
+                            $zan_hoken_e -= round($hoken_e[$a]);
+                            $zan_genka_p -= round($genka_p[$a]);
+                            $zan_genka_e -= round($genka_e[$a]);
+
                         }
 
                     @endphp
                     <div class="px-5">
                         <section class="flex plan_flex">
                             <div class="head_add w-1/3">
-                                <p></p>
-                                <p></p>
+                                <p>所在地：{{$project->property->address}}</p>
+                                <p>最終更新日：{{$project->updated_at}}</p>
                             </div>
                             <div class="head_ttl w-1/3 text-center">
-                                <h2>収支計算表</h2>
+                                <h2 class="text-base">収支計算表（{{strval($c * 10 + 1)."〜".strval(($c+1) * 10)}}）</h2>
                             </div>
                             <div class="head_info w-1/3 text-xs">
                                 <table class="w-full">
                                     <tbody class="w-full">
                                         <tr class="w-full">
-                                            <td class="w-1/4">顧客名</td>
-                                            <td colspan="3" class="w-3/4">{{$project->client}}</td>
+                                            <td class="w-1/4 border">顧客名</td>
+                                            <td colspan="3" class="w-3/4 border">{{$project->client}}</td>
                                         </tr>
                                         <tr class="w-full">
-                                            <td class="w-1/4">金利</td>
-                                            <td class="w-1/4">{{$project->interest_rate}}<span>%</span></td>
-                                            <td class="w-1/4">借入期間</td>
-                                            <td class="w-1/4">{{$project->borrowing_period}}<span>年</span></td>
+                                            <td class="w-1/4 border">金利</td>
+                                            <td class="w-1/4 border">{{$project->interest_rate}}<span>%</span></td>
+                                            <td class="w-1/4 border">借入期間</td>
+                                            <td class="w-1/4 border">{{$project->borrowing_period}}<span>年</span></td>
                                         </tr>
                                         <tr class="w-full">
-                                            <td class="w-1/4">銀行返済開始日</td>
-                                            <td class="w-1/4">{{$project->return_debt_date}}</td>
-                                            <td class="w-1/4">据置期間</td>
-                                            <td class="w-1/4">{{$project->deferred_period}}<span>ヶ月</span></td>
+                                            <td class="w-1/4 border">銀行返済開始日</td>
+                                            <td class="w-1/4 border">{{$project->return_debt_date}}</td>
+                                            <td class="w-1/4 border">据置期間</td>
+                                            <td class="w-1/4 border">{{$project->deferred_period}}<span>ヶ月</span></td>
                                         </tr>
                                         <tr class="w-full">
-                                            <td class="w-1/4">家賃送金開始日</td>
-                                            <td class="w-1/4">{{$project->start_date}}</td>
-                                            <td class="w-1/4">返済方法</td>
-                                            <td class="w-1/4">{{$project->repayment_method}}</td>
+                                            <td class="w-1/4 border">家賃送金開始日</td>
+                                            <td class="w-1/4 border">{{$project->start_date}}</td>
+                                            <td class="w-1/4 border">返済方法</td>
+                                            <td class="w-1/4 border">{{$project->repayment_method}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1043,7 +1150,7 @@
                     </div>
                 </div>
                 @php
-                
+
                     $start_num += $roop;
                     $start_year += $roop;
                 @endphp

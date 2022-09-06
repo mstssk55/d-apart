@@ -6,6 +6,7 @@
     </x-slot>
 
     <div class="py-12">
+        @include('parts.search',["route"=>"projectSearch"])
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-5">
                 <div class="flex pt-6 pl-8 items-center mb-5">
@@ -58,6 +59,8 @@
                         </table>
                     </div>
             </div>
+            {!! $projects->links() !!}
+
         </div>
     </div>
 </x-app-layout>

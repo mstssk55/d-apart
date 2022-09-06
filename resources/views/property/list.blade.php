@@ -6,6 +6,8 @@
     </x-slot>
 
     <div class="py-12">
+        @include('parts.search',["route"=>"propertySearch"])
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-5">
                 <div class="flex pt-6 pl-8 items-center mb-5">
@@ -33,7 +35,7 @@
                             @foreach ($properties as $property)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a class="block" href="{{ route('projectDetail', ['id' => $property->id]) }}">
+                                    <a class="block" href="{{ route('propertyDetail', ['id' => $property->id]) }}">
                                         <p>{{$property->name}}</p>
                                     </a>
                                 </td>
@@ -51,7 +53,8 @@
                         </tbody>
                     </table>
                 </div>
-        </div>
+            </div>
+            {!! $properties->links() !!}
         </div>
     </div>
 </x-app-layout>

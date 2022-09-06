@@ -1,10 +1,10 @@
 @php
-    $tenant_num = "";
-    $tenant_area = "";
-    $house_num = "";
-    $house_area = "";
-    $total_num ="";
-    $total_area="";
+    $tenant_num = 0;
+    $tenant_area = 0;
+    $house_num = 0;
+    $house_area = 0;
+    $total_num =0;
+    $total_area=0;
     if(isset($val)){
         $tenant_num = $val->tenant_num;
         $tenant_area = $val->tenant_area;

@@ -17,14 +17,14 @@
                                 <div class="w-1/4 mr-3">
                                     <select name="id" id="" class="w-full">
                                         <option hidden>物件を選択してください</option>
-                                        @foreach ($properties as $property)
+                                        @foreach ($property_list as $property)
                                             <option value="{{$property->id}}">{{$property->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="w-2/4 mr-3">
+                                {{-- <div class="w-2/4 mr-3">
                                     <input type="text" name="name" placeholder="タイトルを入力して下さい" class="w-full">
-                                </div>
+                                </div> --}}
                                 <div><button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">新規作成する</button></div>
                             </div>
                         </form>
@@ -34,8 +34,8 @@
                             </div>
                         @endif
                         @if ($errors->has('id'))
-                            <div class="text-danger">
-                                物件を選択は必須です。
+                            <div class="text-red-500 mt-2">
+                                ※物件の選択は必須です。
                             </div>
                         @endif
 

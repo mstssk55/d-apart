@@ -43,6 +43,19 @@
     </div> --}}
     <div class="py-16">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
+            <div class="flex justify-end">
+                <form action="{{ route('projectCopy') }}" method="POST" class=" mb-2 text-center w-1/12 bg-cyan-600 hover:bg-cyan-700 rounded py-2 text-white ml-3">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="copy_project_id" value={{$project->id}}>
+                    <input type="hidden" name="copy_property_id" value={{$project->property_id}}>
+                    <button type="submit" class=" block w-full h-full">複製する</button>
+                </form>
+                <form action="{{route('projectDelete',['id'=>$project->id])}}" method="POST" class=" mb-2 text-center w-1/12 bg-white hover:bg-gray-200 rounded py-2 text-gray-500 ml-3 border border-gray-500">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class=" block w-full h-full">削除</button>
+                </form>
+            </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form action={{route('projectUpdate')}} method="POST" enctype="multipart/form-data">
@@ -85,10 +98,13 @@
                                                 @include('parts.project.bukken.col_1_input',['title'=>'銀行返済開始日','id'=>'return_debt_date','type'=>'date'])
                                             </tbody>
                                         </table>
-                                        <div class="flex">
-                                            <a class="project_button bg-cyan-600 hover:bg-cyan-700" href="{{route('projectPlan',['id'=>$project->id])}}">収支</a>
+                                        <div class="flex items-start">
+                                            {{-- <a class="project_button bg-cyan-600 hover:bg-cyan-700" href="{{route('projectPlan',['id'=>$project->id])}}">収支</a> --}}
                                             <a class="project_button bg-cyan-600 hover:bg-cyan-700" href="{{route('projectPdf',['id'=>$project->id])}}" target="_blank">PDF</a>
                                             <a class="project_button bg-cyan-600 hover:bg-cyan-700" href="{{ route('propertyDetail', ['id' => $project->property->id]) }}">物件概要編集</a>
+
+
+
                                         </div>
                                     </div>
                                     {{-- ~~~~~~~~~~~ 収支計画基本情報ここまで ~~~~~~~~~~~ --}}
@@ -1169,7 +1185,7 @@
                             {{--■■■■■■■■■■■■■■■■ 事業計画ここまで ■■■■■■■■■■■■■■■■■■--}}
 
                             <input type="hidden" name="scroll_top" value=1000 class="st">
-                            <button type="submit" class="fixed bottom-20 right-20 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">保存する</button>
+                            <button type="submit" id="submit_btn" class="fixed bottom-20 right-20 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">保存する</button>
                         {{---------------------- form内容ここまで ----------------------------------------------------------}}
                     </form>
 
@@ -1181,6 +1197,33 @@
         $scroll_top = session()->get('scroll_top');
     @endphp
     <script>
+        const input_numbers = document.querySelectorAll('input[type="number"]');
+        for(i = 0;i<input_numbers.length;i++){
+
+            input_numbers[i].classList.add("input_type_number")
+            // input_numbers[i].dataset.type = 'number';
+            input_numbers[i].setAttribute("type","text")
+            input_numbers[i].value = Number(input_numbers[i].value).toLocaleString()
+        }
+        $('body').on('blur','.input_type_number',function(){
+            let val = $(this).val()
+            val = val.replace(/[^0-9.]/g, '')
+            val = Number(val).toLocaleString()
+            $(this).val(val)
+        })
+        $('body').on('click','.input_type_number',function(){
+            let val = $(this).val()
+            val = val.replace(/[^0-9.]/g, '')
+            $(this).val(val)
+        })
+        $('#submit_btn').on('click',function(){
+            for(i = 0;i<input_numbers.length;i++){
+                let val = input_numbers[i].value
+                val = val.replace(/[^0-9.]/g, '')
+                input_numbers[i].value =val
+            }
+        })
+
         $('form').submit(function(){
             var scroll_top = $(window).scrollTop();  //送信時の位置情報を取得
             $('input.st',this).prop('value',scroll_top);  //隠しフィールドに位置情報を設定
@@ -1208,7 +1251,6 @@
         const plan_tenant_area = check_val('{{$project->plan_tenant_area}}');
         const plan_room_area = check_val('{{$project->plan_room_area}}');
         const plan_total_area = check_val('{{$project->plan_total_area}}');
-        console.log(plan_basement_area)
         set_tubo(plan_basement_area,"plan_basement_area")
         set_tubo(plan_tenant_area,"plan_tenant_area")
         set_tubo(plan_room_area,"plan_room_area")
@@ -1395,7 +1437,10 @@
 
         })
 
-
+        function format_num(number){
+            let change_val = number.replace(/[^0-9.]/g, '')
+            return change_val
+        }
 
 
         // 登録免許税
@@ -1407,13 +1452,15 @@
         }
         // 土地所有権移転登記
         function calc_land_ownership_transfer(){
-            const property_tax_area = document.getElementById('property_tax_area').value
+            let property_tax_area = document.getElementById('property_tax_area').value
+            property_tax_area = format_num(property_tax_area)
             let result = floor_hundred(property_tax_area*20/1000)
             return result
         }
         // 建物所有権移転登記
         function calc_prop_ownership_transfer(){
-            const property_tax_prop = document.getElementById('property_tax_prop').value;
+            let property_tax_prop = document.getElementById('property_tax_prop').value;
+            property_tax_prop = format_num(property_tax_prop)
             const prop_cat = @json($project->property->category);
             let result = 0;
             if(prop_cat =="新築"){
@@ -1425,45 +1472,51 @@
         }
         // 抵当権設定費用
         function calc_mortgage_setting_costs(){
-            const debt = document.getElementById('debt').value
+            let debt = document.getElementById('debt').value
+            debt = format_num(debt)
             let result = floor_hundred(debt*4/1000)
             return result
         }
         // 土地不動産取得税
         function calc_estate_tax_area(){
-            const property_tax_area = document.getElementById('property_tax_area').value;
+            let property_tax_area = document.getElementById('property_tax_area').value;
             const estate_tax_jutaku = document.getElementById('estate_tax_jutaku').value;
+            property_tax_area = format_num(property_tax_area)
             let result = 0;
             if(estate_tax_jutaku =="特例あり"){
-                result = floor_hundred(property_tax_area*0.5*0.03)
+                result = floor_hundred(property_tax_area*0.015)
             }else if(estate_tax_jutaku == "特例なし"){
-                result = floor_hundred(property_tax_area*0.03)
+                result = floor_hundred(property_tax_area*0.015)
             }
             return result
         }
 
         // 建物不動産取得税
         function calc_estate_tax_prop(ratio){
-            const property_tax_prop = document.getElementById('property_tax_prop').value;
+            let property_tax_prop = document.getElementById('property_tax_prop').value;
+            property_tax_prop = format_num(property_tax_prop)
             let result = floor_hundred(property_tax_prop*ratio)
             return result
         }
 
         // 根抵当権設定料（事業計画）
         function calc_jigyou_neteitou(){
-            const property_tax_prop = document.getElementById('jigyuo_debt').value;
+            let property_tax_prop = document.getElementById('jigyuo_debt').value;
+            property_tax_prop = format_num(property_tax_prop)
             let result = floor_hundred(property_tax_prop*1.2*0.004)
             return result
         }
         // 不動産取得税（事業計画）
         function calc_jigyuo_fudousan_syutoku(){
-            const property_tax_area = document.getElementById('property_tax_area').value;
-            let result = floor_hundred(property_tax_area*0.04)
+            let property_tax_area = document.getElementById('property_tax_area').value;
+            property_tax_area = format_num(property_tax_area)
+            let result = floor_hundred(property_tax_area*0.015)
             return result
         }
         // 仲介料（事業計画）
         function calc_chukai(){
-            const area_cost = document.getElementById('jigyuo_area_cost').value;
+            let area_cost = document.getElementById('jigyuo_area_cost').value;
+            area_cost = format_num(area_cost)
             let result = 0;
             if(area_cost <=2000000){
                 result = area_cost * 0.05;
@@ -1475,9 +1528,9 @@
             return result
         }
         function calc_kotei(){
-            const area_cost = document.getElementById('property_tax_area').value;
+            let area_cost = document.getElementById('property_tax_area').value;
             const days = document.getElementById('debt_days').textContent;
-            console.log(days)
+            area_cost = format_num(area_cost)
             let result = Math.round((area_cost * 0.014 + area_cost * 0.03)/365 * Number(days));
             return result
         }
@@ -1488,81 +1541,76 @@
 
         $(".btn_calc").on("click",function(){
             const calc_area = this.dataset.id
+            let set_val = 0
+            let set_area = ""
             if(calc_area == "land_ownership_transfer"){ // 土地所有権移転登記
-                const val = calc_land_ownership_transfer()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_land_ownership_transfer()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "prop_ownership_transfer"){ // 建物所有権移転登記
-                const val = calc_prop_ownership_transfer()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_prop_ownership_transfer()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "mortgage_setting_costs"){ // 抵当権設定費用
-                const val = calc_mortgage_setting_costs()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_mortgage_setting_costs()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "estate_tax_area"){ // 土地不動産取得税
-                const val = calc_estate_tax_area()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_estate_tax_area()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "estate_tax_prop"){ // 建物不動産取得税
                 const ratio = this.dataset.num
-                const val = calc_estate_tax_prop(ratio)
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_estate_tax_prop(ratio)
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_neteitou"){ // 根抵当権設定料（事業計画）
-                const val = calc_jigyou_neteitou()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_jigyou_neteitou()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_tourokumenkyo"){ // 登録免許税（事業計画）
-                const val = calc_land_ownership_transfer()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_land_ownership_transfer()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_fudousansyutoku"){ // 不動産取得税（事業計画）
-                const val = calc_estate_tax_area()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_estate_tax_area()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area =="jigyuo_kentiku_fee_tubo"){
-                let val = document.getElementById('jigyuo_kentiku_fee_tubo').value;
-                val = Math.round(val*Number(@json($floor_total_area))*0.3025)
-                const area = document.getElementById('jigyuo_kentiku_fee')
-                area.value = val
+                set_val = document.getElementById('jigyuo_kentiku_fee_tubo').value;
+                set_val = format_num(set_val)
+                set_val = Math.round(set_val*Number(@json($floor_total_area))*0.3025)
+                set_area = document.getElementById('jigyuo_kentiku_fee')
             }else if(calc_area =="jigyuo_kentiku_fee"){
-                let val = document.getElementById('jigyuo_kentiku_fee').value;
-                val = Math.round(val/Number(@json($floor_total_area))/0.3025)
-                const area = document.getElementById('jigyuo_kentiku_fee_tubo')
-                area.value = val
+                set_val = document.getElementById('jigyuo_kentiku_fee').value;
+                set_val = format_num(set_val)
+                set_val = Math.round(set_val/Number(@json($floor_total_area))/0.3025)
+                set_area = document.getElementById('jigyuo_kentiku_fee_tubo')
             }else if(calc_area =="jigyuo_kaitai_fee_tubo"){
-                let val = document.getElementById('jigyuo_kaitai_fee_tubo').value;
-                val = Math.round(val*Number(@json($floor_total_area))*0.3025)
-                const area = document.getElementById('jigyuo_kaitai_fee')
-                area.value = val
+                set_val = document.getElementById('jigyuo_kaitai_fee_tubo').value;
+                console.log(set_val)
+                set_val = format_num(set_val)
+                console.log(set_val)
+                set_val = Math.round(set_val*Number(@json($floor_total_area))*0.3025)
+                console.log(set_val)
+                set_area = document.getElementById('jigyuo_kaitai_fee')
             }else if(calc_area =="jigyuo_kaitai_fee"){
-                let val = document.getElementById('jigyuo_kaitai_fee').value;
-                val = Math.round(val/Number(@json($floor_total_area))/0.3025)
-                const area = document.getElementById('jigyuo_kaitai_fee_tubo')
-                area.value = val
+                set_val = document.getElementById('jigyuo_kaitai_fee').value;
+                console.log(set_val)
+                set_val = format_num(set_val)
+                console.log(set_val)
+                set_val = Math.round(set_val/Number(@json($floor_total_area))/0.3025)
+                console.log(set_val)
+                set_area = document.getElementById('jigyuo_kaitai_fee_tubo')
             }else if(calc_area == "jigyuo_brokerage_fee"){ // 仲介料（事業計画）
-                const val = calc_chukai()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_chukai()
+                set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_koteisisan"){ // 固定資産（事業計画）
-                const val = calc_kotei()
-                const area = document.getElementById(calc_area)
-                area.value = val
+                set_val = calc_kotei()
+                set_area = document.getElementById(calc_area)
             }
+            set_area.value = set_val.toLocaleString()
 
 
         })
 
         $(".data_copy").on("click",function(){
             const area = this.dataset.id
-            console.log(area)
             const val = document.getElementById(area + '_0').value;
-            console.log(val)
 
             const num = document.getElementById('rent_rooms_count').value;
-            console.log(num)
-            console.log('#'+area+'_'+num)
             for(i=0;i<num;i++){
                 $('#'+area+'_'+i).val(val)
             }

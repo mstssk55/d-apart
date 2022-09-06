@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('propertyNew')" :active="request()->routeIs('propertyNew')">
                         {{ __('新規物件作成') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('propertyList')" :active="request()->routeIs('propertyList')">
+                        {{ __('物件一覧') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('projectList')" :active="request()->routeIs('projectList')">
+                        {{ __('収支一覧') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('setting')" :active="request()->routeIs('setting')">
                         {{ __('設定') }}
                     </x-nav-link>
@@ -46,7 +52,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('ログアウト') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>

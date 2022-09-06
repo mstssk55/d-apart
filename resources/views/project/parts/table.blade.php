@@ -82,6 +82,7 @@
             <table class="w-full table_outline">
                 <tbody class="w-full">
                     @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"保険料（年）","val"=>0,"start_cost"=>$after_start_cost,"count"=>$count,"project"=>$project])
+                    @include('project.parts.row_1',["ttl"=>"保険料（年）","vals"=>$hoken])
                 </tbody>
             </table>
         </section>
@@ -96,37 +97,38 @@
         <section class="mt-2">
             <table class="w-full table_outline">
                 <tbody class="w-full">
-                    @include('project.parts.normal',["roop"=>$roop,"ttl"=>"借入金利","val"=>0,"start_cost"=>$after_start_cost])
+                    @include('project.parts.row',["ttl"=>"借入金利","vals"=>$kinnri_p,"vals2"=>$kinnri_a])
                 </tbody>
             </table>
         </section>
         <section class="mt-2">
             <table class="w-full table_outline">
                 <tbody class="w-full">
-                    @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"その他経費","val"=>0,"start_cost"=>$after_start_cost])
-                </tbody>
-            </table>
-        </section>
-        <section class="mt-2">
-            <table class="w-full table_outline">
-                <tbody class="w-full">
-                    @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"経費合計","val"=>0,"start_cost"=>$after_start_cost])
-                </tbody>
-            </table>
-        </section>
-        <section class="mt-2">
-            <table class="w-full table_outline">
-                <tbody class="w-full">
-                    @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"税務上損益","val"=>0,"start_cost"=>$after_start_cost])
-                </tbody>
-            </table>
-        </section>
-        <section class="mt-2">
-            <table class="w-full table_outline">
-                <tbody class="w-full">
-                    @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"ローン残高","val"=>0,"start_cost"=>$after_start_cost])
-                    @include('project.parts.row_1',["ttl"=>"ローン残高","vals"=>$loan])
+                    @include('project.parts.row_1',["ttl"=>"その他経費","vals"=>$sonota])
 
+                </tbody>
+            </table>
+        </section>
+        <section class="mt-2">
+            <table class="w-full table_outline">
+                <tbody class="w-full">
+                    @include('project.parts.row_1',["ttl"=>"経費合計","vals"=>$keihi])
+                </tbody>
+            </table>
+        </section>
+        <section class="mt-2">
+            <table class="w-full table_outline">
+                <tbody class="w-full">
+                    @include('project.parts.row_1',["ttl"=>"税務上損益","vals"=>$soneki])
+                </tbody>
+            </table>
+        </section>
+        <section class="mt-2">
+            <table class="w-full table_outline">
+                <tbody class="w-full">
+                    @include('project.parts.row_1',["ttl"=>"ローン残高","vals"=>$loan_zan])
+                    {{-- @include('project.parts.row_1',["ttl"=>"ローン残高","vals"=>$kinnri])
+                    @include('project.parts.row_1',["ttl"=>"ローン残高","vals"=>$gankin]) --}}
                 </tbody>
             </table>
         </section>

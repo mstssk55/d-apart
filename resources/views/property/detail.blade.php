@@ -21,6 +21,11 @@
                                 <form  action={{route('propertyUpdate')}} method="POST">
                                     {{ csrf_field() }}
                                     @include('parts.property.col1',['title'=>'物件名','name'=>'name','value' => $property->name])
+                                    @if ($errors->has('name'))
+                                        <div class="text-red-500 ml-40">
+                                            ※物件名の入力は必須です。
+                                        </div>
+                                    @endif
                                     @include('parts.property.col1',['title'=>'所在地','name'=>'address','value' => $property->address])
                                     <div class="w-full flex items-center mb-5 text-sm">
                                         <label class="w-1/5">新築中古区分</label>
@@ -192,13 +197,14 @@
                 </div>
             </div>
             <div class="w-1/4 ml-4">
-                @foreach ($property->projects as $project)
-                    <a href="{{ route('projectDetail', ['id' => $project->id]) }}" class="block py-5 px-8 mb-3 bg-white rounded-md">
+                @foreach ($property->project_list_desc($property->id) as $project)
+                    <a href="{{ route('projectDetail', ['id' => $project->id]) }}" class="border border-cyan-700 block py-5 px-8 mb-3 bg-white rounded-md hover:bg-cyan-700  hover:text-white hover:opacity-75">
                         <div class="flex items-center border-b mb-2">
-                            <p class="mr-3">{{$project->name}}</p>
-                            <p class="text-xs">{{$project->updated_at}}</p>
+                            <p class=" mr-3">{{$project->name}}</p>
+
                         </div>
-                        <p class="text-xs">{{$project->user->name}}</p>
+                        <p class="text-xs">作成者：{{$project->user->name}}</p>
+                        <p class="text-xs">更新日：{{$project->updated_at}}</p>
                     </a>
 
                 @endforeach

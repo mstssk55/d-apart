@@ -39,6 +39,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/property/list', [PropertiesController::class, 'index'])
     ->name('propertyList');
 
+    //一覧表示-絞り込み
+    Route::post('/property/list/search', [ProjectController::class, 'search'])
+    ->name('propertySearch');
+
+
+
+
     //詳細画面
     Route::get('/property/detail/{id}', [PropertiesController::class, 'show'])
     ->name('propertyDetail');
@@ -58,6 +65,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/project/store', [ProjectController::class, 'store'])
     ->name('projectStore');
 
+    //登録処理
+    Route::post('/project/copy', [ProjectController::class, 'copy'])
+    ->name('projectCopy');
+
     //詳細画面
     Route::get('/project/{id}', [ProjectController::class, 'show'])
     ->name('projectDetail');
@@ -69,6 +80,15 @@ Route::group(['middleware' => 'auth'], function () {
     //一覧表示
     Route::get('/list', [ProjectController::class, 'index'])
     ->name('projectList');
+
+    //一覧表示-絞り込み
+    Route::post('/list/search', [ProjectController::class, 'search'])
+    ->name('projectSearch');
+
+    //削除処理
+    Route::delete('/project/delete/{id}', [ProjectController::class, 'destroy'])
+    ->name('projectDelete');
+
 
     //収支計画
     Route::get('/plan/{id}', [ProjectController::class, 'plan'])

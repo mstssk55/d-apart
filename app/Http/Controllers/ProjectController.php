@@ -19,7 +19,7 @@ use App\Models\Bank;
 use App\Models\Bikou;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -31,12 +31,48 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        $projects = Project::get();;
+        $user_id = "";
+        $property_id = "";
+        $users = User::get();
+        $properties = Property::get();
+        $projects = Project::paginate(15);
         return view('project.list')->with([
             'projects' => $projects,
+            'users' => $users,
+            'properties' => $properties,
+            'user_id' => $user_id,
+            'property_id' => $property_id,
         ]);
 
     }
+    public function search(Request $request)
+    {
+        //
+        $user_id = $request->search_user;
+        $property_id = $request->search_property;
+        $condition = [];
+        if($user_id != null){
+            $set = ["user_id",$user_id];
+            array_push($condition,$set);
+        }
+        if($property_id != null){
+            $set = ["property_id",$property_id];
+            array_push($condition,$set);
+        }
+        $users = User::get();
+        $properties = Property::get();
+        $projects = Project::where($condition)->paginate(15);
+
+        return view('project.list')->with([
+            'projects' => $projects,
+            'users' => $users,
+            'properties' => $properties,
+            'user_id' => $user_id,
+            'property_id' => $property_id,
+        ]);
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -46,10 +82,20 @@ class ProjectController extends Controller
     public function create(Request $request)
     {
         //
+        $property = Property::get();
+        $property_ids = [];
+        $p_name = "";
+        foreach($property as $pid){
+            array_push($property_ids,$pid->id);
+            if($pid->id == $request->id){
+                $p_name = $pid->name;
+            }
+        }
         //バリデーション
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'id' => 'required',
+            'id' => [
+                Rule::in($property_ids)
+            ],
         ]);
         // バリデーション:エラー
         if ($validator->fails()) {
@@ -57,12 +103,15 @@ class ProjectController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-
+        // $name = $request->name;
+        // if($request->name == ""){
+        $name = $p_name;
+        // }
         session()->put(['scroll_top' => 0]);
         $project = new Project;
         $project->property_id = $request->id;
         $project->user_id = Auth::user()->id;
-        $project->name = $request->name;
+        $project->name = $name;
         $project->save();
         $last_insert_id = $project->id;
         return redirect()->route('projectDetail', ['id' => $last_insert_id]);
@@ -519,9 +568,12 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Project $id)
     {
         //
+        $id->delete();
+        return redirect()->route('projectList');
+
     }
 
     public function plan($id)
@@ -559,5 +611,63 @@ class ProjectController extends Controller
         //         'project' => $project,
         //     ]);
     }
+
+    public function copy(Request $request)
+    {
+        session()->put(['scroll_top' => 0]);
+
+        $oldrow = Project::find($request->copy_project_id);
+        $newrow = $oldrow->replicate();
+        $newrow->name = $newrow->name.'のコピー';
+        $newrow->save();
+        $last_insert_id = $newrow->id;
+
+        $oldplans = Plan::where("project_id",$request->copy_project_id)->get();
+        foreach($oldplans as $oldplan){
+            $newplan = $oldplan->replicate();
+            $newplan->project_id = $last_insert_id;
+            $newplan->save();
+        }
+        $oldparkings = Parking::where("project_id",$request->copy_project_id)->get();
+        foreach($oldparkings as $oldparking){
+            $newparking = $oldparking->replicate();
+            $newparking->project_id = $last_insert_id;
+            $newparking->save();
+        }
+        $oldfloors = Floor::where("project_id",$request->copy_project_id)->get();
+        foreach($oldfloors as $oldfloor){
+            $newfloor = $oldfloor->replicate();
+            $newfloor->project_id = $last_insert_id;
+            $newfloor->save();
+        }
+        $oldrooms = Room::where("project_id",$request->copy_project_id)->get();
+        foreach($oldrooms as $oldroom){
+            $newroom = $oldroom->replicate();
+            $newroom->project_id = $last_insert_id;
+            $newroom->save();
+        }
+        $oldothers = Other::where("project_id",$request->copy_project_id)->get();
+        foreach($oldothers as $oldother){
+            $newother = $oldother->replicate();
+            $newother->project_id = $last_insert_id;
+            $newother->save();
+        }
+        $oldbikous = Bikou::where("project_id",$request->copy_project_id)->get();
+        foreach($oldbikous as $oldbikou){
+            $newbikou = $oldbikou->replicate();
+            $newbikou->project_id = $last_insert_id;
+            $newbikou->save();
+        }
+
+
+
+
+
+
+
+        return redirect()->route('projectDetail', ['id' => $last_insert_id]);
+
+    }
+
 
 }

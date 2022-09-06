@@ -8,6 +8,7 @@ use App\Models\Station;
 use App\Models\Road;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PropertiesController extends Controller
 {
@@ -19,9 +20,33 @@ class PropertiesController extends Controller
     public function index()
     {
         //
-        $properties = Property::get();;
+        $user_id = "";
+        $users = User::get();
+        $properties = Property::paginate(15);
         return view('property.list')->with([
             'properties' => $properties,
+            'users' => $users,
+            'user_id' => $user_id,
+        ]);
+
+    }
+
+    public function search(Request $request)
+    {
+        //
+        $user_id = $request->search_user;
+        $condition = [];
+        if($user_id != null){
+            $set = ["user_id",$user_id];
+            array_push($condition,$set);
+        }
+        $users = User::get();
+        $properties = Property::where($condition)->paginate(15);
+
+        return view('property.list')->with([
+            'properties' => $properties,
+            'users' => $users,
+            'user_id' => $user_id,
         ]);
 
     }
@@ -50,6 +75,13 @@ class PropertiesController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
         ]);
+        // バリデーション:エラー
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
         $property = new Property;
         $property->name = $request->name;
         $property->address = $request->address;

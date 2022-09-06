@@ -23,6 +23,11 @@
             <form  action={{route('propertyStore')}} method="POST">
                 {{ csrf_field() }}
                 @include('parts.property.col1',['title'=>'物件名','name'=>'name'])
+                @if ($errors->has('name'))
+                    <div class="text-red-500 ml-40">
+                        ※物件名の入力は必須です。
+                    </div>
+                @endif
                 @include('parts.property.col1',['title'=>'所在地','name'=>'address'])
                 <div class="w-full flex items-center mb-5 text-sm">
                     <label class="w-1/5">新築中古区分</label>

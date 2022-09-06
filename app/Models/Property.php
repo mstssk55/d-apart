@@ -27,6 +27,15 @@ class Property extends Model
     {
       return $this->hasMany(Project::class);
     }
+    public static function project_list_desc($property_id)
+    {
+        return Project::query()
+        ->where([
+            ['property_id', '=', $property_id],
+        ])
+        ->orderBy('updated_at', 'DESC')
+        ->get();
+    }
 
 
 }
