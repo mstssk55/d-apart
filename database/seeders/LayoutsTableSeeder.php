@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\layout;
+use App\Models\Layout;
 
 use Illuminate\Database\Seeder;
 
@@ -15,7 +15,7 @@ class LayoutsTableSeeder extends Seeder
     public function run()
     {
         //
-        $layout = new layout([
+        $layout = new Layout([
             'name' => '１LDK',
             ]);
         $layout->save();
