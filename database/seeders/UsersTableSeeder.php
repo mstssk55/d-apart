@@ -15,20 +15,20 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         //
-        $user = new \App\models\User([
+        $user = new \App\Models\User([
             'name' => '佐々木将人',
             'email' => 'test@test.com',
             'password' => Hash::make('testtest'),
             ]);
         $user->save();
-        $user = new \App\models\User([
+        $user = new \App\Models\User([
             'name' => '佐藤',
             'email' => 'test1@test.com',
             'password' => Hash::make('testtest'),
             ]);
         $user->save();
 
-        $user = new \App\models\User([
+        $user = new \App\Models\User([
             'name' => '田村',
             'email' => 'tes2@test.com',
             'password' => Hash::make('testtest'),
