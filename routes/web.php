@@ -9,6 +9,8 @@ use App\Http\Controllers\ConstructionsController;
 use App\Http\Controllers\LayoutsController;
 use App\Http\Controllers\ConstructionPlansController;
 use App\Http\Controllers\BanksController;
+use App\Http\Controllers\KanrisController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -140,6 +142,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/bank/delete/{id}', [BanksController::class, 'destroy'])
     ->name('bankDelete');
 
+
+    //設定ページ
+    Route::get('/user', [KanrisController::class, 'kanri'])
+    ->name('kanri');
 
 
 
