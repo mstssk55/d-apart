@@ -1,7 +1,13 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
+table,tr,th,td {
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 130% !important;
+  }
 .project_button{
     padding: 10px 50px;
     color: #fff;
@@ -44,13 +50,12 @@
     display: -webkit-box; /* 追加 */
     -webkit-box-pack: center; /* 追加 */
     justify-content: center;
-
 }
 .pdf_main{
-    display: -webkit-box; /* 追加 */
-    -webkit-box-pack: flex-start; /* 追加 */
+    /* display: -webkit-box;
+    -webkit-box-pack: flex-start;
     justify-content: flex-start;
-    display: flex;
+    display: flex; */
 
 }
 .pdf_haed{
@@ -69,23 +74,23 @@
 }
 
 .pdf_page{
-    page-break-after: always;
+    /* page-break-after: always; */
     page-break-inside: avoid;
 
 }
 .pdf_main h2{
     text-align: center;
-    font-size: 18px !important;
+    font-size: 14px !important;
     background-color: #eeeeee;
-    padding: 5px 0;
+    padding: 3px 0;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
 .pdf_main h3{
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: bold;
-    margin-top: 5px !important;
+    margin-top: 3px !important;
 }
 
 .pdf_table_gaiyou{
@@ -246,4 +251,31 @@
 .plan_table_wrapper{
     overflow-x: scroll;
     display: flex;
+}
+
+.demodemodemo table
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo tbody
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo tr
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo th
+{
+    padding: 0 !important;
+    margin: 0;
+}
+
+.demodemodemo td
+{
+    padding: 0 !important;
+    margin: 0;
 }

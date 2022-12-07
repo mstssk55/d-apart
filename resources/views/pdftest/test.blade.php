@@ -3,21 +3,16 @@
         <title>pdf output test</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <style>
-            @font-face{
-                font-family: migmix;
+            @font-face {
+                font-family: ipag;
                 font-style: normal;
                 font-weight: normal;
-                src: url("{{ storage_path('fonts/migmix-2p-regular.ttf')}}") format('truetype');
-            }
-            @font-face{
-                font-family: migmix;
-                font-style: bold;
-                font-weight: bold;
-                src: url("{{ storage_path('fonts/migmix-2p-bold.ttf')}}") format('truetype');
+                src: url('{{ storage_path('fonts/ipaexg.ttf') }}') format('truetype');
             }
             body {
                 font-family: migmix;
-                line-height: 80%;
+                line-height: 100%;
+                font-size: 10px
             }
             .main_image {
                 width: 100%;
@@ -51,7 +46,7 @@
             <img src="https://codelikes.com/wp-content/uploads/2019/06/PHP-e1601051806241.jpg" />
         </div>
         お寿司のテーブル
-        <table class="sushiTable">
+        {{-- <table class="sushiTable">
             <tr>
                 <th>名前</th>
                 <th>価格</th>
@@ -61,6 +56,12 @@
                 <td>{{ $key }}</td><td>{{ $value }}</td>
             </tr>
             @endforeach
-        </table>
+        </table> --}}
+
+<div style="grid-template-columns: repeat(3, minmax(0, 1fr));" class="grid grid-cols-3 gap-4">
+    <div>a</div>
+    <div>b</div>
+    <div>c</div>
+</div>
     </body>
 </html>

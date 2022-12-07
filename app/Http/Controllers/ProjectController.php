@@ -598,8 +598,17 @@ class ProjectController extends Controller
         // $pdf->setPaper('A4','landscape');
         // return $pdf->stream('title.pdf');
 
+        // $pdf = PDF::loadView('project.pdf', compact('project'))
+        // ->setPaper('A4')                                // 用紙サイズ
+        // ->setOption('encoding', 'utf-8')                // Encoding
+        // ->setOption('margin-top', 10)                   // 上マージン
+        // ->setOption('margin-bottom', 10)                // 下マージン
+        // ->setOption('margin-left', 10)                  // 左マージン
+        // ->setOption('margin-right', 10)
+        // ->setOption('orientation', 'Landscape') ;
+        // return $pdf->stream();
         $pdf = PDF::loadView('project.pdf', compact('project'))
-        ->setPaper('A4')                                // 用紙サイズ
+        ->setPaper('A4','landscape')                                // 用紙サイズ
         ->setOption('encoding', 'utf-8')                // Encoding
         ->setOption('margin-top', 10)                   // 上マージン
         ->setOption('margin-bottom', 10)                // 下マージン

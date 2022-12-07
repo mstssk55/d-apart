@@ -6,10 +6,10 @@
             <table class="w-full table_outline">
                 <tbody class="w-full">
                     <tr class="w-full">
-                        <td class="w-1/12 border_inner text-center"></td>
-                        <td class="w-1/12 border_inner text-center"></td>
+                        <td style="width:8.3%" class="w-1/12 border_inner text-center"></td>
+                        <td style="width:8.3%" class="w-1/12 border_inner text-center"></td>
                         @for ($i = 0;$i<$roop;$i++)
-                            <td class="w-1/12 border_inner text-center">{{$i + $start_num}}年度</td>
+                            <td style="width:8.3%" class="w-1/12 border_inner text-center">{{$i + $start_num}}年度</td>
                         @endfor
                     </tr>
                     <tr class="w-full table_under_line">

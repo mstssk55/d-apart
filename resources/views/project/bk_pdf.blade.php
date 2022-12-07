@@ -177,15 +177,15 @@
         }
     @endphp
     <body class="text-sm">
-        <main class="">
+        <main class="flex">
             <div class="pdf_page">
                 @include('project.parts.pdf_haed',["name"=>$project->name,"updated_at"=>$project->updated_at])
                 <div class="pdf_main">
-                    <div class="pdf_table pdf_table_gaiyou" style="float:left; font-size:12px">
+                    <section class="pdf_table pdf_table_gaiyou">
                         <h2>物件概要</h2>
                         <h3>物件概要</h3>
                         <table class="w-full pdf_table_gai">
-                            <tbody>
+                            <tbody class="w-full">
                                 <tr>
                                     <th>所在地</th>
                                     <td colspan="3">{{$project->property->address}}</td>
@@ -279,7 +279,7 @@
                         </table>
                         <h3>建築プラン</h3>
                         <table class="w-full pdf_table_kentiku">
-                            <tbody>
+                            <tbody class="w-full">
                                 <tr>
                                     <th>種類</th>
                                     <td>{{$project->plan_kind}}</td>
@@ -365,7 +365,7 @@
                         </table>
                         <h3>家賃収入</h3>
                         <table class="w-full pdf_table_yatin">
-                            <tbody class="">
+                            <tbody class="w-full">
                                 <tr>
                                     <th>家賃</th>
                                     <td>{{number_format($total_fee_rent)}}<span>円/月</span></td>
@@ -386,7 +386,7 @@
                         </table>
                         <h3>販売価格</h3>
                         <table class="w-full pdf_table_yatin">
-                            <tbody class="">
+                            <tbody class="w-full">
                                 <tr>
                                     <th>土地</th>
                                     <td colspan="3">{{number_format($project->price_land)}}<span>円</span></td>
@@ -410,8 +410,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="pdf_table pdf_table_kiso" style="float:left">
+                    </section>
+                    <section class="pdf_table pdf_table_kiso">
                         <h2>基礎情報</h2>
                         <h3>賃金・借入金内訳</h3>
                         <table class="w-full pdf_table_gai">
@@ -566,8 +566,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="pdf_table pdf_table_fee" style="float:left">
+                    </section>
+                    <section class="pdf_table pdf_table_fee">
                         <h2>家賃明細</h2>
                         <h3>家賃</h3>
                         <table class="w-full pdf_table_feedetail">
@@ -609,10 +609,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
+                    </section>
                 </div>
             </div>
-            <div class="pdf_page" style="clear: both;">
+            <div class="pdf_page">
                 @include('project.parts.pdf_haed',["name"=>$project->name,"updated_at"=>$project->updated_at])
                 <div class="page_2 mb-3">
                     <table class="w-full pdf_table">
@@ -641,7 +641,7 @@
                     </table>
                 </div>
                 <div class="pdf_main">
-                    <section style="float:left" class="pdf_table pdf_table_jigyou">
+                    <section class="pdf_table pdf_table_jigyou">
                         <h3>事業計画</h3>
                         <div class="pdf_table_jigyou_flex mb-5">
                             <div class="pdf_table_sammary">
@@ -803,7 +803,7 @@
                             </tbody>
                         </table>
                     </section>
-                    <section style="float:left" class="pdf_table pdf_table_jigyou">
+                    <section class="pdf_table pdf_table_jigyou">
                         <h3 class="opacity-0">-</h3>
                         <table class="w-full mb-5">
                             <tbody>
@@ -980,7 +980,7 @@
 
             @endphp
             @for ($c = 0;$c<4;$c++)
-                <div class="pdf_page"  style="clear: both;">
+                <div class="pdf_page">
                     @php
                         $roop = 10;
                         $yatin_m = roop_val($total_fee_all,$roop);
@@ -1107,19 +1107,15 @@
 
                     @endphp
                     <div class="px-5">
-                        <section class="plan_flex">
-                            <table style="width:33%; float: left;">
-                                <tr><td>所在地：{{$project->property->address}}</td></tr>
-                                <tr><td>最終更新日：{{$project->updated_at}}</td></tr>
-                            </table>
-                            {{-- <div class="head_add w-1/3">
-                                <p></p>
-                                <p></p>
-                            </div> --}}
-                            <div style="width:33%; float: left;" class="head_ttl w-1/3 text-center">
+                        <section class="flex plan_flex">
+                            <div class="head_add w-1/3">
+                                <p>所在地：{{$project->property->address}}</p>
+                                <p>最終更新日：{{$project->updated_at}}</p>
+                            </div>
+                            <div class="head_ttl w-1/3 text-center">
                                 <h2 class="text-base">収支計算表（{{strval($c * 10 + 1)."〜".strval(($c+1) * 10)}}）</h2>
                             </div>
-                            <div style="width:33%; float: left;" class="head_info w-1/3 text-xs">
+                            <div class="head_info w-1/3 text-xs">
                                 <table class="w-full">
                                     <tbody class="w-full">
                                         <tr class="w-full">
@@ -1148,7 +1144,7 @@
                                 </table>
                             </div>
                         </section>
-                        <div class="text-sm"  style="font-size: 12px !important; clear: both;">
+                        <div class="text-sm">
                             @include("project.parts.table",["project"=>$project,"roop"=>$roop,"start_num"=>$start_num,"start_year"=>$start_year,"count"=>$c,"project_debt"=>$project_debt])
                         </div>
                     </div>

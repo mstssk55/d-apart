@@ -633,10 +633,6 @@ select {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
-.mx-3 {
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -892,6 +888,9 @@ select {
 .table-fixed {
   table-layout: fixed;
 }
+.border-collapse {
+  border-collapse: collapse;
+}
 .origin-top-left {
   transform-origin: top left;
 }
@@ -926,6 +925,9 @@ select {
 .list-disc {
   list-style-type: disc;
 }
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -949,6 +951,9 @@ select {
 }
 .justify-between {
   justify-content: space-between;
+}
+.gap-4 {
+  gap: 1rem;
 }
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -1404,6 +1409,13 @@ select {
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
+table,tr,th,td {
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 130% !important;
+  }
 .project_button{
     padding: 10px 50px;
     color: #fff;
@@ -1445,12 +1457,12 @@ select {
 .plan_flex{
     display: -webkit-box; /* 追加 */ /* 追加 */
     justify-content: center;
-
 }
 .pdf_main{
-    display: -webkit-box; /* 追加 */ /* 追加 */
+    /* display: -webkit-box;
+    -webkit-box-pack: flex-start;
     justify-content: flex-start;
-    display: flex;
+    display: flex; */
 
 }
 .pdf_haed{
@@ -1465,22 +1477,22 @@ select {
 
 }
 .pdf_page{
-    page-break-after: always;
+    /* page-break-after: always; */
     page-break-inside: avoid;
 
 }
 .pdf_main h2{
     text-align: center;
-    font-size: 18px !important;
+    font-size: 14px !important;
     background-color: #eeeeee;
-    padding: 5px 0;
+    padding: 3px 0;
     margin-bottom: 5px;
     font-weight: bold;
 }
 .pdf_main h3{
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: bold;
-    margin-top: 5px !important;
+    margin-top: 3px !important;
 }
 .pdf_table_gaiyou{
     width: 38%;
@@ -1621,6 +1633,31 @@ select {
     overflow-x: scroll;
     display: flex;
 }
+.demodemodemo table
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo tbody
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo tr
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo th
+{
+    padding: 0 !important;
+    margin: 0;
+}
+.demodemodemo td
+{
+    padding: 0 !important;
+    margin: 0;
+}
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -1641,6 +1678,10 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
 .hover\:bg-gray-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
@@ -1648,14 +1689,6 @@ select {
 .hover\:bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-}
-.hover\:bg-gray-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
-}
-.hover\:bg-gray-200:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 .hover\:text-gray-500:hover {
   --tw-text-opacity: 1;
