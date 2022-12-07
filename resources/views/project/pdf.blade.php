@@ -1150,7 +1150,6 @@
                     </div>
                 </div>
                 @php
-
                     $start_num += $roop;
                     $start_year += $roop;
                 @endphp

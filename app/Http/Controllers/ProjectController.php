@@ -20,6 +20,7 @@ use App\Models\Bikou;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ProjectController extends Controller
 {
@@ -597,7 +598,7 @@ class ProjectController extends Controller
         // $pdf->setPaper('A4','landscape');
         // return $pdf->stream('title.pdf');
 
-        $pdf = \PDF::loadView('project.pdf', compact('project'))
+        $pdf = PDF::loadView('project.pdf', compact('project'))
         ->setPaper('A4')                                // 用紙サイズ
         ->setOption('encoding', 'utf-8')                // Encoding
         ->setOption('margin-top', 10)                   // 上マージン
@@ -605,7 +606,7 @@ class ProjectController extends Controller
         ->setOption('margin-left', 10)                  // 左マージン
         ->setOption('margin-right', 10)
         ->setOption('orientation', 'Landscape') ;
-        return $pdf->inline();
+        return $pdf->stream();
 
         // return view('project.pdf')->with([
         //         'project' => $project,
@@ -668,6 +669,19 @@ class ProjectController extends Controller
         return redirect()->route('projectDetail', ['id' => $last_insert_id]);
 
     }
+    public function output() {
+        $sushiTable = [
+            'たまご' => '100円',
+            'いくら' => '200円',
+            'サーモン' => '180円',
+            'いか' => '100円',
+            'マグロ' => '110円',
+            'えび' => '100円',
+        ];
 
+        $pdf = PDF::loadView('pdftest.test', ['sushiTable' => $sushiTable]);
+        $pdf->setPaper('A4');
+        return $pdf->stream();
 
+    }
 }

@@ -154,7 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
         return PDF::loadHTML('<h1>Hello!</h1>')->inline();
     });
 
-
+    Route::get('/output/pdf', [ProjectController::class, 'output']);
 
 
 });
