@@ -1400,10 +1400,13 @@
             const each_floor_num = @json($each_floor_total_num);
             let table_body = "";
             let name_count = 0;
-
             for(let i = 0;i<each_floor_num.length;i++){
+                let room_num = 1;
                 for(let n = 0;n<each_floor_num[i];n++){
-                    let room_number = n + 1
+                    if(room_num == 4 || room_num == 9 || room_num == 14 || room_num == 19){
+                        room_num ++
+                    }
+                    let room_number = room_num
                     if(room_number<10){
                         room_number = '0' + String(room_number)
                     }
@@ -1416,6 +1419,7 @@
                                         ${body_num("room_common_"+ String(name_count),"")}
                                     </tr>`
                     name_count ++
+                    room_num ++
                 }
             }
             // const insert = `<table class="table-fixed w-full text-xs">
