@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     ->name('propertyList');
 
     //一覧表示-絞り込み
-    Route::post('/property/list/search', [ProjectController::class, 'search'])
+    Route::post('/property/list/search', [PropertiesController::class, 'search'])
     ->name('propertySearch');
 
 

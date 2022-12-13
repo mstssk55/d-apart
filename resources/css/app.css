@@ -1,13 +1,14 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-table,tr,th,td {
+
+.pdf_page table,.pdf_page tr,.pdf_page th,.pdf_page td {
     border-collapse: collapse;
     border-spacing: 0;
     padding: 0 !important;
     margin: 0 !important;
     line-height: 130% !important;
-  }
+}
 .project_button{
     padding: 10px 50px;
     color: #fff;
