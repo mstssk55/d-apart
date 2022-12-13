@@ -212,7 +212,7 @@ class PropertiesController extends Controller
             $road_kind = 'road_kind_'.$i;
             $direction = 'direction_'.$i;
             $length = 'length_'.$i;
-            if(isset($request->$route) && isset($request->$direction)){
+            if(isset($request->$road_kind) && isset($request->$direction)){
                 $road = new Road;
                 $road->road_kind = $request->$road_kind;
                 $road->direction = $request->$direction;

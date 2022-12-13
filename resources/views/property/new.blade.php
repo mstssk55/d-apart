@@ -2,7 +2,9 @@
     @include('parts.property.station')
     @php
         $stations = json_encode(stations());
-        $lines = json_encode(lines())
+        $lines = json_encode(lines());
+        $json_load_kind = json_encode(load_kind());
+        $json_load_direction = json_encode(load_direction());
     @endphp
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -92,8 +94,21 @@
                     </label>
                     <div class="add_road">
                         <div class="flex items-center text-sm mb-2">
-                            <input id="road_kind" name="road_kind_0" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400">
-                            <input id="direction" name="direction_0" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                            <select name="road_kind_0" id="road_kind" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                                <option value="">選択してください</option>
+                                @foreach (load_kind() as $load_kind)
+                                    <option value="{{$load_kind}}">{{$load_kind}}</option>
+                                @endforeach
+                            </select>
+                            <select name="direction_0" id="direction" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                                <option value="">選択してください</option>
+                                @foreach (load_direction() as $load_direction)
+                                    <option value="{{$load_direction}}">{{$load_direction}}</option>
+                                @endforeach
+                            </select>
+
+                            {{-- <input id="road_kind" name="road_kind_0" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400"> --}}
+                            {{-- <input id="direction" name="direction_0" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400"> --}}
                             <input id="length" name="length_0" type="number" step="0.01" class="w-1/6 mr-2 rounded text-sm border-gray-400">
                             <span>m</span>
                         </div>
@@ -156,9 +171,25 @@
                             <span>分</span>
                         </div>`;
                 }else{
+                    const json_load_kind = JSON.parse(@json($json_load_kind));
+                    const json_load_direction = JSON.parse(@json($json_load_direction));
+                    let insert_kind = "";
+                    json_load_kind.forEach(element => {
+                        insert_kind +=`<option value="${element}">${element}</option>`
+                    });
+                    let insert_direction = "";
+                    json_load_direction.forEach(element => {
+                        insert_direction +=`<option value="${element}">${element}</option>`
+                    });
                     insert = `<div class="flex items-center text-sm mb-2">
-                            <input id="${name1}" name="${name1}_${number}" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400">
-                            <input id="${name2}" name="${name2}_${number}" type="text" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                            <select name="${name1}_${number}" id="${name1}" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                                <option value="">選択してください</option>
+                                ${insert_kind}
+                            </select>
+                            <select name="${name2}_${number}" id="${name2}" class="w-1/3 mr-1 rounded text-sm border-gray-400">
+                                <option value="">選択してください</option>
+                                ${insert_direction}
+                            </select>
                             <input id="${name3}" name="${name3}_${number}" type="number" step="0.01" class="w-1/6 mr-2 rounded text-sm border-gray-400">
                             <span>m</span>
                         </div>`;

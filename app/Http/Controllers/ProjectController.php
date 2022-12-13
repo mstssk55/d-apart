@@ -36,7 +36,7 @@ class ProjectController extends Controller
         $property_id = "";
         $users = User::get();
         $properties = Property::get();
-        $projects = Project::paginate(15);
+        $projects = Project::orderBy('updated_at', 'DESC')->paginate(15);
         return view('project.list')->with([
             'projects' => $projects,
             'users' => $users,
@@ -198,6 +198,7 @@ class ProjectController extends Controller
 
         // 収支計画基本情報-----------------------------------------
         $project->name = $request->name;
+        $project->project_type = $request->project_type;
         $project->client = $request->client;
         $project->manager = $request->manager;
         $project->house_name = $request->house_name;

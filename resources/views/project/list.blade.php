@@ -23,7 +23,7 @@
                                     物件名
                                 </th>
                                 <th scope="col" class="w-1/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    更新日
+                                    物件番号
                                 </th>
                                 <th scope="col" class="w-1/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     作成日
@@ -45,7 +45,7 @@
                                         <p>{{$project->property->name}}</p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs">
-                                        <p>{{$project->updated_at}}</p>
+                                        <p>{{$project->project_type}}</p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs">
                                         <p>{{$project->created_at}}</p>

@@ -1,9 +1,33 @@
 @php
     function city_plan(){
         $city=[
-            "市街化区域"
-    ];
+            "市街化区域",
+            "市街化調整区域",
+            "非線引区域",
+            "準都市計画区域",
+            "都市計画区域外",
+        ];
         return $city;
+    }
+    function load_kind(){
+        $kind=[
+            "公道",
+            "私道",
+        ];
+        return $kind;
+    }
+    function load_direction(){
+        $direction=[
+            "北",
+            "南",
+            "西",
+            "東",
+            "北東",
+            "北西",
+            "南東",
+            "南西",
+        ];
+        return $direction;
     }
     function youto_area(){
         $city=[

@@ -71,6 +71,7 @@
                                         <table class="table-fixed w-full mb-3">
                                             <tbody class="">
                                                 @include('parts.project.bukken.col_1_input',['title'=>'タイトル','id'=>'name'])
+                                                @include('parts.project.bukken.col_1_input',['title'=>'物件番号','id'=>'project_type'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'顧客名','id'=>'client'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'館名','id'=>'house_name'])
                                                 <tr class="w-full">
@@ -246,15 +247,97 @@
                                             <table class="table-fixed w-full mb-3">
                                                 <tbody class="">
                                                     @php
+                                                        $floor_total_tenant_num = 0;
+                                                        $floor_total_tenant_area = 0;
+                                                        $floor_total_house_num = 0;
+                                                        $floor_total_house_area = 0;
+                                                        $floor_total_num = 0;
+                                                        $floor_total_area = 0;
+                                                        $each_floor_total_num = [];
                                                         $yield_tax = 0;
                                                         $yield = 0;
                                                         $price_prop_tax =round($project->price_prop *0.1);
                                                         $price_prop_total = $project->price_prop + $price_prop_tax;
                                                         $total_price = $project->price_prop + $project->price_land;
-                                                        // if($total_price > 0){
-                                                        //     $yield_tax = $total_fees*12/($total_price + $price_prop_tax)*100;
-                                                        //     $yield = $total_fees*12/$total_price*100;
-                                                        // }
+                                                        function total_fee($array,$val,$type= "room"){
+                                                            $cost = 0;
+                                                            foreach ($array as $fee) {
+                                                                if($type == "room"){
+                                                                    $cost += $fee->$val;
+                                                                }else if($type == "park"){
+                                                                    $park = $fee->$val;
+                                                                    $cost += $park * $fee->count;
+                                                                }
+                                                            }
+                                                            return $cost;
+                                                        }
+                                                        $total_fee_rent = total_fee($project->rooms,"room_rent");
+                                                        $total_fee_kanri = total_fee($project->rooms,"room_common");
+                                                        $total_fee_other = 0;
+                                                        $total_fee_parking = total_fee($project->parkings,"fee","park");
+                                                        $total_fee_all = $total_fee_rent + $total_fee_kanri + $total_fee_other + $total_fee_parking;
+
+                                                        $plan_totla_price =$total_price;
+                                                        $plan_totla_price_tax = $total_price+$price_prop_tax;
+
+                                                        $jigyou_total_area_fee = 0;
+                                                        $jigyou_total_area_fee_tax = 0;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_area_cost;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_brokerage_fee;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_syoukai_fee;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_neteitou;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_tourokumenkyo;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_fudousansyutoku;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_sihousyosi;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_ginkou_fee;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_risoku_fee;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_koteisisan;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_kaitai_fee;
+                                                        $jigyou_total_area_fee +=$project->jigyuo_tatinoki;
+                                                        if (count($project->bikous_kind("area",$project->id))>0){
+                                                            foreach ($project->bikous_kind("area",$project->id) as $bikou){
+                                                                $jigyou_total_area_fee +=$bikou->fee;
+                                                                $jigyou_total_area_fee_tax += round($bikou->fee*0.1);
+                                                            }
+                                                        }
+                                                        $jigyou_total_area_fee_tax += round($project->jigyuo_brokerage_fee*0.1);
+                                                        $jigyou_total_area_fee_tax += round($project->jigyuo_sihousyosi*0.1);
+                                                        $jigyou_total_area_fee_tax += round($project->jigyuo_kaitai_fee*0.1);
+                                                        $jigyou_total_area_fee_tax += $jigyou_total_area_fee-$project->jigyuo_ginkou_fee;
+
+                                                        $jigyou_total_prop_fee = 0;
+                                                        $jigyou_total_prop_fee_tax = 0;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_kentiku_fee;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_kui;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_sekkeikanri;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_net;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_jio;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_gas * $floor_total_num;
+                                                        $jigyou_total_prop_fee +=$project->jigyuo_ad * $floor_total_num;
+                                                        if (count($project->bikous_kind("prop",$project->id))>0){
+                                                            foreach ($project->bikous_kind("prop",$project->id) as $bikou){
+                                                                $jigyou_total_prop_fee +=$bikou->fee;
+                                                                $jigyou_total_prop_fee_tax += round($bikou->fee*0.1);
+                                                            }
+                                                        }
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_kentiku_fee*0.1);
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_kui*0.1);
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_sekkeikanri*0.1);
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_net*0.1);
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_gas * $floor_total_num*0.1);
+                                                        $jigyou_total_prop_fee_tax += round($project->jigyuo_ad * $floor_total_num*0.1);
+                                                        $jigyou_total_prop_fee_tax += $jigyou_total_prop_fee;
+
+                                                        $total_genka = $jigyou_total_prop_fee + $jigyou_total_area_fee;
+                                                        $arari = $plan_totla_price-$total_genka;
+                                                        $arari_ratio = 0;
+                                                        $rimawari = 0;
+                                                        $rimawari_tax = 0;
+                                                        if($total_price > 0){
+                                                            $arari_ratio = $arari/$plan_totla_price *100;
+                                                            $rimawari=($total_fee_all * 12)/$total_price *100;
+                                                            $rimawari_tax = ($total_fee_all * 12)/$plan_totla_price_tax *100;
+                                                        }
                                                     @endphp
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'土地','id'=>'price_land','unit'=>'円'])
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'建物','id'=>'price_prop','unit'=>'円'])
@@ -262,6 +345,12 @@
                                                     @include('parts.project.gaiyou.col_1_rent',['title'=>'税込み','id'=>'price_prop_total','val'=>number_format($price_prop_total),'unit'=>'円','right'=>0])
                                                     @include('parts.project.gaiyou.col_1_rent',['title'=>'合計','id'=>'total_price','val'=>number_format($total_price),'unit'=>'円'])
                                                 </tbody>
+                                            </table>
+                                            @include('parts.project.h3',['title'=>'利回り'])
+                                            <table class="table-fixed w-full mb-3">
+                                                <tbody class="">
+                                                    @include('parts.project.rent_plan.price',['head'=>"税抜",'price'=>round($rimawari, 2)])
+                                                    @include('parts.project.rent_plan.price',['head'=>"税込み",'price'=>round($rimawari_tax, 2)])
                                             </table>
                                         </div>
                                     {{-- ~~~~~~~~~~~ 販売価格ここまで ~~~~~~~~~~~ --}}
@@ -271,13 +360,7 @@
                                         <div class="w-1/2 mr-8">
                                             @include('parts.project.h3',['title'=>'間取り'])
                                             @php
-                                                $floor_total_tenant_num = 0;
-                                                $floor_total_tenant_area = 0;
-                                                $floor_total_house_num = 0;
-                                                $floor_total_house_area = 0;
-                                                $floor_total_num = 0;
-                                                $floor_total_area = 0;
-                                                $each_floor_total_num = [];
+
                                             @endphp
                                             @if ($project->floor == "")
                                                 <p class="text-center">先に階数を登録して下さい。</p>
@@ -622,7 +705,7 @@
                                                     </tr>
                                                     @include('parts.project.gaiyou.col2_total',['title'=>'管理手数料（戸）','id'=>'management_fee'])
                                                     @include('parts.project.gaiyou.col2_total',['title'=>'インターネット使用料','id'=>'internet_fee'])
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'共用電気量','id'=>'common_electricity','unit'=>'円/月'])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'共用電気料','id'=>'common_electricity','unit'=>'円/月'])
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'定期清掃料','id'=>'cleaning_fee','unit'=>'円/月'])
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'振込手数料','id'=>'transfer_fee','unit'=>'円/月'])
                                                     <tr class="w-full">
@@ -799,88 +882,6 @@
 
                                 </div>
                             {{--■■■■■■■■■■■■■■■■ 基礎情報ここまで ■■■■■■■■■■■■■■■■■■--}}
-                            @php
-                                function total_fee($array,$val,$type= "room"){
-                                    $cost = 0;
-                                    foreach ($array as $fee) {
-                                        if($type == "room"){
-                                            $cost += $fee->$val;
-                                        }else if($type == "park"){
-                                            $park = $fee->$val;
-                                            $cost += $park * $fee->count;
-                                        }
-                                    }
-                                    return $cost;
-                                }
-                                $total_fee_rent = total_fee($project->rooms,"room_rent");
-                                $total_fee_kanri = total_fee($project->rooms,"room_common");
-                                $total_fee_other = 0;
-                                $total_fee_parking = total_fee($project->parkings,"fee","park");
-                                $total_fee_all = $total_fee_rent + $total_fee_kanri + $total_fee_other + $total_fee_parking;
-
-                                $plan_totla_price =$total_price;
-                                $plan_totla_price_tax = $total_price+$price_prop_tax;
-
-                                $jigyou_total_area_fee = 0;
-                                $jigyou_total_area_fee_tax = 0;
-                                $jigyou_total_area_fee +=$project->jigyuo_area_cost;
-                                $jigyou_total_area_fee +=$project->jigyuo_brokerage_fee;
-                                $jigyou_total_area_fee +=$project->jigyuo_syoukai_fee;
-                                $jigyou_total_area_fee +=$project->jigyuo_neteitou;
-                                $jigyou_total_area_fee +=$project->jigyuo_tourokumenkyo;
-                                $jigyou_total_area_fee +=$project->jigyuo_fudousansyutoku;
-                                $jigyou_total_area_fee +=$project->jigyuo_sihousyosi;
-                                $jigyou_total_area_fee +=$project->jigyuo_ginkou_fee;
-                                $jigyou_total_area_fee +=$project->jigyuo_risoku_fee;
-                                $jigyou_total_area_fee +=$project->jigyuo_koteisisan;
-                                $jigyou_total_area_fee +=$project->jigyuo_kaitai_fee;
-                                $jigyou_total_area_fee +=$project->jigyuo_tatinoki;
-                                if (count($project->bikous_kind("area",$project->id))>0){
-                                    foreach ($project->bikous_kind("area",$project->id) as $bikou){
-                                        $jigyou_total_area_fee +=$bikou->fee;
-                                        $jigyou_total_area_fee_tax += round($bikou->fee*0.1);
-                                    }
-                                }
-                                $jigyou_total_area_fee_tax += round($project->jigyuo_brokerage_fee*0.1);
-                                $jigyou_total_area_fee_tax += round($project->jigyuo_sihousyosi*0.1);
-                                $jigyou_total_area_fee_tax += round($project->jigyuo_kaitai_fee*0.1);
-                                $jigyou_total_area_fee_tax += $jigyou_total_area_fee-$project->jigyuo_ginkou_fee;
-
-                                $jigyou_total_prop_fee = 0;
-                                $jigyou_total_prop_fee_tax = 0;
-                                $jigyou_total_prop_fee +=$project->jigyuo_kentiku_fee;
-                                $jigyou_total_prop_fee +=$project->jigyuo_kui;
-                                $jigyou_total_prop_fee +=$project->jigyuo_sekkeikanri;
-                                $jigyou_total_prop_fee +=$project->jigyuo_net;
-                                $jigyou_total_prop_fee +=$project->jigyuo_jio;
-                                $jigyou_total_prop_fee +=$project->jigyuo_gas * $floor_total_num;
-                                $jigyou_total_prop_fee +=$project->jigyuo_ad * $floor_total_num;
-                                if (count($project->bikous_kind("prop",$project->id))>0){
-                                    foreach ($project->bikous_kind("prop",$project->id) as $bikou){
-                                        $jigyou_total_prop_fee +=$bikou->fee;
-                                        $jigyou_total_prop_fee_tax += round($bikou->fee*0.1);
-                                    }
-                                }
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_kentiku_fee*0.1);
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_kui*0.1);
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_sekkeikanri*0.1);
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_net*0.1);
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_gas * $floor_total_num*0.1);
-                                $jigyou_total_prop_fee_tax += round($project->jigyuo_ad * $floor_total_num*0.1);
-                                $jigyou_total_prop_fee_tax += $jigyou_total_prop_fee;
-
-                                $total_genka = $jigyou_total_prop_fee + $jigyou_total_area_fee;
-                                $arari = $plan_totla_price-$total_genka;
-                                $arari_ratio = 0;
-                                $rimawari = 0;
-                                $rimawari_tax = 0;
-                                if($total_price > 0){
-                                    $arari_ratio = $arari/$plan_totla_price *100;
-                                    $rimawari=($total_fee_all * 12)/$total_price *100;
-                                    $rimawari_tax = ($total_fee_all * 12)/$plan_totla_price_tax *100;
-                                }
-
-                            @endphp
                             {{--■■■■■■■■■■■■■■■■ 事業計画 ■■■■■■■■■■■■■■■■■■--}}
                                 @include('parts.project.h2',['title'=>'事業計画'])
                                 <div class="flex mb-5">
@@ -1117,7 +1118,7 @@
                                                 <tbody class="w-full">
                                                     @include('parts.project.jigyou.col1_kentiku',['title'=>'建築本体費（坪）','id'=>'jigyuo_kentiku_fee_tubo','unit'=>'円'])
                                                     @include('parts.project.jigyou.col1_kentiku',['title'=>'建築本体費','id'=>'jigyuo_kentiku_fee','unit'=>'円'])
-                                                    @include('parts.project.jigyou.col1',['title'=>'くい工事','id'=>'jigyuo_kui','unit'=>'円','type'=>"税"])
+                                                    @include('parts.project.jigyou.col1',['title'=>'杭工事','id'=>'jigyuo_kui','unit'=>'円','type'=>"税"])
                                                     @include('parts.project.jigyou.col1',['title'=>'設計監理費用','id'=>'jigyuo_sekkeikanri','unit'=>'円','type'=>"税"])
                                                     @include('parts.project.jigyou.col2',['title'=>'ネット無料工事','id'=>'jigyuo_net','unit'=>'円','type'=>"税","kind"=>"棟","rooms"=>0])
                                                     @include('parts.project.jigyou.col2',['title'=>'JIO保険料','id'=>'jigyuo_jio','unit'=>'円',"kind"=>"棟","rooms"=>0])
