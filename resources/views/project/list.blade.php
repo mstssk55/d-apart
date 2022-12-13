@@ -38,11 +38,11 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a class="block" href="{{ route('projectDetail', ['id' => $project->id]) }}">
-                                            <p>{{$project->name}}</p>
+                                            <p>{{Str::limit($project->name, 20)}}</p>
                                         </a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <p>{{$project->property->name}}</p>
+                                        <p>{{Str::limit($project->property->name, 20)}}</p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs">
                                         <p>{{$project->project_type}}</p>

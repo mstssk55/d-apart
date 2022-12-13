@@ -36,11 +36,11 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a class="block" href="{{ route('propertyDetail', ['id' => $property->id]) }}">
-                                        <p>{{$property->name}}</p>
+                                        <p>{{Str::limit($property->name, 20)}}</p>
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <p>{{$property->address}}</p>
+                                    <p>{{Str::limit($property->address, 20)}}</p>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-xs">
                                     <p>{{$property->created_at}}</p>
