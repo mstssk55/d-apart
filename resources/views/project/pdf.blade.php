@@ -785,13 +785,13 @@
                                 </tr>
                                 <tr>
                                     <th>支払利息</th>
-                                    <td>{{number_format($project->jigyuo_koteisisan)}}<span>円</span></td>
-                                    <td>{{number_format($project->jigyuo_koteisisan)}}<span>円</span></td>
+                                    <td>{{number_format($project->jigyuo_risoku_fee)}}<span>円</span></td>
+                                    <td>{{number_format($project->jigyuo_risoku_fee)}}<span>円</span></td>
                                 </tr>
                                 <tr>
                                     <th>解体費用</th>
-                                    <td>{{number_format($project->jigyuo_koteisisan)}}<span>円</span></td>
-                                    <td>{{number_format($project->jigyuo_koteisisan)}}<span>円</span></td>
+                                    <td>{{number_format($project->jigyuo_kaitai_fee)}}<span>円</span></td>
+                                    <td>{{calc_tax($project->jigyuo_kaitai_fee)}}<span>円</span></td>
                                 </tr>
                                 <tr>
                                     <th>立ち退き費用</th>
