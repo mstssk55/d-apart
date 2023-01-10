@@ -739,7 +739,7 @@
                             </thead>
                             <tbody class="w-full">
                                 <tr>
-                                    <th>土地代金</th>
+                                    <th>土地代金 {{$area_tubo > 0 ? "(坪単価：".number_format(round($project->jigyuo_area_cost/$area_tubo,2))."円)" : ""}}</th>
                                     <td>{{number_format($project->jigyuo_area_cost)}}<span>円</span></td>
                                     <td>{{number_format($project->jigyuo_area_cost)}}<span>円</span></td>
                                 </tr>
