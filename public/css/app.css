@@ -1540,6 +1540,8 @@ select {
 }
 .pdf_table_gai td{
     width: 25%;
+    text-align: right;
+    padding-right: 5px !important;
 }
 .pdf_table_kentiku th{
     width: 25%;
@@ -1552,6 +1554,17 @@ select {
 }
 .pdf_table_yatin td{
     width: 25%;
+    text-align: right;
+    padding-right: 5px !important;
+}
+.pdf_td_right td{
+    text-align: right;
+    padding-right: 5px !important;
+
+}
+.table_right{
+    text-align: right !important;
+    padding-right: 5px !important;
 }
 .pdf_table_kiso th{
     width: 35%;

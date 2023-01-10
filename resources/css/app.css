@@ -138,11 +138,20 @@
     border: 1px solid #555555;
     padding-left: 10px;
 }
+.pdf_table_gai_left th{
+    width: 25%;
+}
+.pdf_table_gai_left td{
+    width: 25%;
+}
+
 .pdf_table_gai th{
     width: 25%;
 }
 .pdf_table_gai td{
     width: 25%;
+    text-align: right;
+    padding-right: 5px !important;
 }
 
 .pdf_table_kentiku th{
@@ -156,8 +165,18 @@
 }
 .pdf_table_yatin td{
     width: 25%;
+    text-align: right;
+    padding-right: 5px !important;
 }
+.pdf_td_right td{
+    text-align: right;
+    padding-right: 5px !important;
 
+}
+.table_right{
+    text-align: right !important;
+    padding-right: 5px !important;
+}
 .pdf_table_kiso th{
     width: 35%;
 }

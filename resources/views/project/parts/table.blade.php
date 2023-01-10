@@ -81,7 +81,7 @@
         <section class="mt-2">
             <table class="w-full table_outline">
                 <tbody class="w-full">
-                    @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"保険料（年）","val"=>0,"start_cost"=>$after_start_cost,"count"=>$count,"project"=>$project])
+                    {{-- @include('project.parts.normal_1',["roop"=>$roop,"ttl"=>"保険料（年）","val"=>0,"start_cost"=>$after_start_cost,"count"=>$count,"project"=>$project]) --}}
                     @include('project.parts.row_1',["ttl"=>"保険料（年）","vals"=>$hoken])
                 </tbody>
             </table>

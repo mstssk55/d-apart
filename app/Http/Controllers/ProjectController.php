@@ -455,6 +455,7 @@ class ProjectController extends Controller
         $project->monthly_repayment_amount = $risoku;
         $project->own_resources = $total_expenses - $request->debt;
         $project->repayment_method = $request->repayment_method;
+        $project->bank_name = $request->bank_name;
         $project->total_expenses = $total_expenses;
         $project->borrowing_period = $request->borrowing_period;
         $project->deferred_period = $request->deferred_period;

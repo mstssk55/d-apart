@@ -177,14 +177,14 @@
         }
     @endphp
     <body class="text-sm">
-        <main class="">
+        <main class="px-5">
             <div class="pdf_page">
                 @include('project.parts.pdf_haed',["name"=>$project->name,"updated_at"=>$project->updated_at])
                 <div class="pdf_main">
                     <div class="pdf_table pdf_table_gaiyou" style="float:left; font-size:12px">
                         <h2>物件概要</h2>
                         <h3>物件概要</h3>
-                        <table class="w-full pdf_table_gai">
+                        <table class="w-full pdf_table_gai_left">
                             <tbody>
                                 <tr>
                                     <th>所在地</th>
@@ -198,9 +198,9 @@
                                 </tr>
                                 <tr>
                                     <th>完成予定</th>
-                                    <td>{{$project->open_date}}</td>
+                                    <td>{{$project->open_date ? $project->open_date->format(config('const.format.date')) : ""}}</td>
                                     <th>家賃送金開始日</th>
-                                    <td>{{$project->start_date}}</td>
+                                    <td>{{$project->start_date ? $project->start_date->format(config('const.format.date')) : ""}}</td>
                                 </tr>
                                 <tr>
                                     <th>館名</th>
@@ -229,8 +229,8 @@
                                 <tr>
                                     <th>地積</th>
                                     <td colspan="3">
-                                        {{$project->property->land_area}} <span class="mr-5">㎡</span>
-                                        {{$area_tubo}} <span>坪</span>
+                                        {{number_format($project->property->land_area,2)}} <span class="mr-5">㎡</span>
+                                        {{number_format($area_tubo,2)}} <span>坪</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -335,23 +335,25 @@
                                 <tr class="kentiku_area">
                                     <th rowspan="3">面積</th>
                                     <td colspan="2">
-                                        <span>テナント</span>
-                                        <span>{{$floor_total_tenant_area}}㎡</span>
-                                        <span>{{m_tubo_conv($floor_total_tenant_area)}}坪</span>
+                                        @if ($floor_total_tenant_area != 0)
+                                            <span>テナント</span>
+                                            <span>{{$floor_total_tenant_area}}㎡</span>
+                                            <span>{{m_tubo_conv($floor_total_tenant_area)}}坪</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr class="kentiku_area">
                                     <td colspan="2">
                                         <span>居住</span>
-                                        <span>{{$floor_total_house_area}}㎡</span>
-                                        <span>{{m_tubo_conv($floor_total_house_area)}}坪</span>
+                                        <span>{{number_format($floor_total_house_area,2)}}㎡</span>
+                                        <span>{{number_format(m_tubo_conv($floor_total_house_area),2)}}坪</span>
                                     </td>
                                 </tr>
                                 <tr class="kentiku_area">
                                     <td colspan="2">
                                         <span>延床</span>
-                                        <span>{{$floor_total_area}}㎡</span>
-                                        <span>{{m_tubo_conv($floor_total_area)}}坪</span>
+                                        <span>{{number_format($floor_total_area,2)}}㎡</span>
+                                        <span>{{number_format(m_tubo_conv($floor_total_area),2)}}坪</span>
                                     </td>
                                 </tr>
                                 {{-- <tr class="kentiku_area">
@@ -553,15 +555,23 @@
                                 <tr>
                                     <th>住宅総合保険</th>
                                     <td>
-                                        {{number_format($project->housing_insurance_year)}}<span>年分</span>
-                                        {{number_format($project->housing_insurance_cost)}}<span>円</span>
+                                        @if ($project->housing_insurance_case == "入る")
+                                            {{number_format($project->housing_insurance_year)}}<span>年分</span>
+                                            {{number_format($project->housing_insurance_cost)}}<span>円</span>
+                                        @else
+                                            なし
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>地震保険</th>
                                     <td>
-                                        {{number_format($project->earthquake_insurance_year)}}<span>年分</span>
-                                        {{number_format($project->earthquake_insurance_cost)}}<span>円</span>
+                                        @if ($project->earthquake_insurance_case == "入る")
+                                            {{number_format($project->earthquake_insurance_year)}}<span>年分</span>
+                                            {{number_format($project->earthquake_insurance_cost)}}<span>円</span>
+                                        @else
+                                            なし
+                                        @endif
                                     </td>
                                 </tr>
                             </tbody>
@@ -583,9 +593,9 @@
                                 <tr>
                                     <td>{{$room->room_no}}</td>
                                     <td>{{$room->room_plan}}</td>
-                                    <td>{{$room->room_area}}</td>
-                                    <td>{{number_format($room->room_rent)}}</td>
-                                    <td>{{number_format($room->room_common)}}</td>
+                                    <td class="table_right">{{number_format($room->room_area,2)}}</td>
+                                    <td class="table_right">{{number_format($room->room_rent)}}</td>
+                                    <td class="table_right">{{number_format($room->room_common)}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -602,9 +612,9 @@
                                 @foreach ($project->parkings as $parking)
                                 <tr>
                                     <td>{{$parking->plan}}</td>
-                                    <td>{{$parking->count}}</td>
-                                    <td>{{number_format($parking->fee)}}</td>
-                                    <td>{{number_format($parking->fee * $parking->count)}}</td>
+                                    <td class="table_right">{{$parking->count}}</td>
+                                    <td class="table_right">{{number_format($parking->fee)}}</td>
+                                    <td class="table_right">{{number_format($parking->fee * $parking->count)}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -631,9 +641,9 @@
                             </tr>
                             <tr>
                                 <th>借入先</th>
-                                <td>{{$project->debt}}</td>
+                                <td>{{$project->bank_name}}</td>
                                 <th>借入期間</th>
-                                <td>{{$project->deferred_period}}</td>
+                                <td>{{$project->borrowing_period}}年</td>
                                 <th>金利</th>
                                 <td>{{$project->interest_rate}}</td>
                             </tr>
@@ -645,7 +655,7 @@
                         <h3>事業計画</h3>
                         <div class="pdf_table_jigyou_flex mb-5">
                             <div class="pdf_table_sammary">
-                                <table class="w-full">
+                                <table class="w-full pdf_td_right">
                                     <thead>
                                         <th class="w-2/12"></th>
                                         <th class="w-2/12"></th>
@@ -681,7 +691,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class="w-full mt-5">
+                                <table class="w-full mt-5 pdf_td_right">
                                     <thead>
                                         <th class="w-2/12"></th>
                                         <th class="w-2/12"></th>
@@ -691,37 +701,37 @@
                                     <tbody class="w-full">
                                         <tr>
                                             <th colspan="2">利回り</th>
-                                            <td>{{round($rimawari,2)}}<span>%(税抜)</span></td>
-                                            <td>{{round($rimawari_tax,2)}}<span>%(税込)</span></td>
+                                            <td>{{number_format(round($rimawari,2),2)}}<span>%(税抜)</span></td>
+                                            <td>{{number_format(round($rimawari_tax,2),2)}}<span>%(税込)</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
 
                             </div>
                             <div class="pdf_table_sammary_price">
-                                <table class="w-full">
+                                <table class="w-full pdf_td_right">
                                     <tbody class="w-full">
                                         <tr>
                                             <th class="w-1/3">販売価格</th>
-                                            <td class="w-2/3">{{number_format($total_price)}}</td>
+                                            <td class="w-2/3">{{number_format($total_price)}}<span>円</span></td>
                                         </tr>
                                         <tr>
                                             <th>原価</th>
-                                            <td>{{number_format($total_genka)}}</td>
+                                            <td>{{number_format($total_genka)}}<span>円</span></td>
                                         </tr>
                                         <tr>
                                             <th>粗利額</th>
-                                            <td>{{number_format($arari)}}</td>
+                                            <td>{{number_format($arari)}}<span>円</span></td>
                                         </tr>
                                         <tr>
                                             <th>粗利率</th>
-                                            <td>{{round($arari_ratio, 2)}}</td>
+                                            <td>{{number_format(round($arari_ratio, 2),2)}}<span>%</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <table class="w-full">
+                        <table class="w-full pdf_td_right">
                             <thead>
                                 <th class="w-1/3"></th>
                                 <th class="text-center w-1/3">【税抜】</th>
@@ -810,24 +820,24 @@
                                 <tr>
                                     <th class="w-1/4">建築工期</th>
                                     <td class="w-2/4">
-                                        <span>{{$project->structure_start_date}}</span>
+                                        <span>{{$project->structure_start_date ? $project->structure_start_date->format(config('const.format.date')) : ""}}</span>
                                         <span class="px-8">~</span>
-                                        <span>{{$project->structure_end_date}}</span>
+                                        <span>{{$project->structure_end_date ? $project->structure_end_date->format(config('const.format.date')) : ""}}</span>
                                     </td>
                                     <td class="w-1/4">{{calc_date($project->structure_start_date,$project->structure_end_date)}}<span>日</span></td>
                                 </tr>
                                 <tr>
                                     <th class="w-1/4">借入期間</th>
                                     <td class="w-2/4">
-                                        <span>{{$project->debt_start_date}}</span>
+                                        <span>{{$project->debt_start_date ? $project->debt_start_date->format(config('const.format.date')) : ""}}</span>
                                         <span class="px-8">~</span>
-                                        <span>{{$project->debt_end_date}}</span>
+                                        <span>{{$project->debt_end_date ? $project->debt_end_date->format(config('const.format.date')) : ""}}</span>
                                     </td>
                                     <td class="w-1/4">{{calc_date($project->debt_start_date,$project->debt_end_date)}}<span>日</span></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="w-full mb-5">
+                        <table class="w-full mb-5 pdf_td_right">
                             <tbody class="w-full">
                                 <tr>
                                     <th class="w-1/3">借入金</th>
@@ -843,7 +853,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="w-full mb-5">
+                        <table class="w-full mb-5 pdf_td_right">
                             <thead>
                                 <th class="w-1/3"></th>
                                 <th class="text-center w-1/3">【税抜】</th>
@@ -899,7 +909,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table class="w-full">
+                        <table class="w-full pdf_td_right">
                             <thead>
                                 <th class="w-1/3"></th>
                                 <th class="text-center w-1/3">【税抜】</th>
@@ -1150,6 +1160,7 @@
                         </section>
                         <div class="text-sm"  style="font-size: 12px !important; clear: both;">
                             @include("project.parts.table",["project"=>$project,"roop"=>$roop,"start_num"=>$start_num,"start_year"=>$start_year,"count"=>$c,"project_debt"=>$project_debt])
+                            <p>※この収支計算表はシミュレーションです。実際の収支と相違する場合があります。固定資産税の負担調整措置は考慮していません。</p>
                         </div>
                     </div>
                 </div>

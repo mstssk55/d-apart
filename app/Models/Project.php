@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
+    protected $dates = [
+        'open_date',
+        'start_date',
+        'structure_start_date',
+        'structure_end_date',
+        'debt_start_date',
+        'debt_end_date',
+        'created_at',
+        'updated_at'
+    ];
     public function property()
     {
       return $this->belongsTo(Property::class);

@@ -841,6 +841,7 @@
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'借入額','id'=>'debt','unit'=>'円'])
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'返済額','id'=>'monthly_repayment_amount','unit'=>'円','type'=>"disabled"])
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'自己資金','id'=>'own_resources','unit'=>'円','type'=>"disabled"])
+                                                    @include('parts.project.bukken.col_1_input',['title'=>'借入金融機関名','id'=>'bank_name'])
                                                     <tr class="w-full">
                                                         <th class="w-1/3 px-2 py-1 border text-left font-normal bg-gray-100">返済方法</th>
                                                         <td class="w-2/3 border">
