@@ -1031,7 +1031,8 @@
                             $clean_y[0] =$clean_m[0] * $after_start_cost;
                             $net_y[0] =$net_m[0] * $after_start_cost;
                             $furikomi_y[0] =$furikomi_m[0] * $after_start_cost;
-                            $koteisisan_m[0] = $koteisisan_m[0]/calc_zero(365*$diff_days);
+                            // $koteisisan_m[0] = $koteisisan_m[0]/calc_zero(365*$diff_days);
+                            $koteisisan_m[0] = $koteisisan_m[0]*calc_zero($diff_days)/365;
                             $toshikeikaku_m[0] = $toshikeikaku_m[0]/calc_zero(365*$diff_days);
                             $genka_p[0] =$genka_p[0] /12 * $after_start_cost;
                             $genka_e[0] =$genka_e[0] /12 * $after_start_cost;
