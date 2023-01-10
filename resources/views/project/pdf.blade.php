@@ -861,7 +861,7 @@
                             </thead>
                             <tbody class="w-full">
                                 <tr>
-                                    <th>建築本体工事</th>
+                                    <th>建築本体工事 {{$project->jigyuo_kentiku_fee_tubo > 0 ? "(坪単価：".number_format($project->jigyuo_kentiku_fee_tubo)."円)" : ""}}</th>
                                     <td>{{number_format($project->jigyuo_kentiku_fee)}}<span>円</span></td>
                                     <td>{{calc_tax($project->jigyuo_kentiku_fee)}}<span>円</span></td>
                                 </tr>
