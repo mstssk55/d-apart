@@ -592,9 +592,9 @@
                                             <table class="table-fixed w-full mb-3">
                                                 <tbody class="">
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'表示登記','id'=>'display_registration','unit'=>'円'])
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'土地所有権移転登記','id'=>'land_ownership_transfer','unit'=>'円','calc'=>0])
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'建物所有権移転登記','id'=>'prop_ownership_transfer','unit'=>'円','calc'=>0])
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'抵当権設定費用','id'=>'mortgage_setting_costs','unit'=>'円','calc'=>0])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'土地所有権移転登記','id'=>'land_ownership_transfer','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額入力必須）'])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'建物所有権移転登記','id'=>'prop_ownership_transfer','unit'=>'円','calc'=>0,'desc'=>'（事前に建物評価額、物件概要新築中古区分の入力必須）'])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'抵当権設定費用','id'=>'mortgage_setting_costs','unit'=>'円','calc'=>0,'desc'=>'（事前に借入額の入力必須）'])
                                                 </tbody>
                                             </table>
                                         {{-- ~~~~~~~~~~~ 登録免許税ここまで ~~~~~~~~~~~ --}}
@@ -602,8 +602,8 @@
                                             @include('parts.project.h3',['title'=>'不動産取得税'])
                                             <table class="table-fixed w-full mb-3">
                                                 <tbody class="">
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'土地不動産取得税','id'=>'estate_tax_area','unit'=>'円','calc'=>0])
-                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'建物不動産取得税','id'=>'estate_tax_prop','unit'=>'円','calc'=>1])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'土地不動産取得税','id'=>'estate_tax_area','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額、住宅用地特例措置の入力必須）'])
+                                                    @include('parts.project.gaiyou.col_1_input',['title'=>'建物不動産取得税','id'=>'estate_tax_prop','unit'=>'円','calc'=>1,'desc'=>'（事前に建物評価額の入力必須）'])
                                                 </tbody>
                                             </table>
                                         {{-- ~~~~~~~~~~~ 不動産取得税ここまで ~~~~~~~~~~~ --}}
@@ -979,15 +979,15 @@
                                                             </td>
                                                             </tr>
                                                         {{-- @include('parts.project.jigyou.col1',['title'=>'仲介料','id'=>'jigyuo_brokerage_fee','unit'=>'円','type'=>"税"]) --}}
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'仲介料','id'=>'jigyuo_brokerage_fee','unit'=>'円','calc'=>0,'tax'=>"税"])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'仲介料','id'=>'jigyuo_brokerage_fee','unit'=>'円','calc'=>0,'tax'=>"税",'desc'=>'（事前に土地代金の入力必須）'])
                                                         @include('parts.project.jigyou.col1',['title'=>'紹介料','id'=>'jigyuo_syoukai_fee','unit'=>'円'])
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'根抵当権設定料','id'=>'jigyuo_neteitou','unit'=>'円','calc'=>0])
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'登録免許税','id'=>'jigyuo_tourokumenkyo','unit'=>'円','calc'=>0])
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'不動産取得税','id'=>'jigyuo_fudousansyutoku','unit'=>'円','calc'=>0])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'根抵当権設定料','id'=>'jigyuo_neteitou','unit'=>'円','calc'=>0,'desc'=>'（事前に借入金の入力必須）'])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'登録免許税','id'=>'jigyuo_tourokumenkyo','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額入力必須）'])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'不動産取得税','id'=>'jigyuo_fudousansyutoku','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額、住宅用地特例措置の入力必須）'])
                                                         @include('parts.project.jigyou.col1',['title'=>'司法書士報酬','id'=>'jigyuo_sihousyosi','unit'=>'円','type'=>"税"])
                                                         @include('parts.project.jigyou.col1',['title'=>'銀行手数料・印紙','id'=>'jigyuo_ginkou_fee','unit'=>'円'])
                                                         {{-- @include('parts.project.jigyou.col1',['title'=>'固定資産税等','id'=>'jigyuo_koteisisan','unit'=>'円']) --}}
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'固定資産税等','id'=>'jigyuo_koteisisan','unit'=>'円','calc'=>0])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'固定資産税等','id'=>'jigyuo_koteisisan','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額、借入期間の入力必須）'])
                                                         <tr class="w-full">
                                                             <th class="w-1/3 px-2 py-1 border  font-normal bg-gray-100 text-left">支払い利息</th>
                                                             <td class="w-2/3 border">

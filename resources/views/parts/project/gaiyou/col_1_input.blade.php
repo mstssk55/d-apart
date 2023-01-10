@@ -17,6 +17,10 @@
                 <button type="button" class="btn_calc py-1 px-2 bg-gray-300 text-xs rounded" data-id="{{$id}}" data-num=0.04>4%</button>
             </div>
         @endif
+        @if (isset($desc))
+            <br>
+            <span class="text-xs">{{$desc}}</span>
+        @endif
     </th>
     <td class="w-2/3 border">
         <div class="flex items-center">
