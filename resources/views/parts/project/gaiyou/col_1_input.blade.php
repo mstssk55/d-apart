@@ -16,6 +16,11 @@
                 <button type="button" class="btn_calc py-1 px-2 bg-gray-300 text-xs rounded" data-id="{{$id}}" data-num=0.03>3%</button>
                 <button type="button" class="btn_calc py-1 px-2 bg-gray-300 text-xs rounded" data-id="{{$id}}" data-num=0.04>4%</button>
             </div>
+        @elseif (isset($calc) &&$calc ==2)
+            <div>
+                <button type="button" class="btn_calc py-1 px-2 bg-gray-300 text-xs rounded" data-id="{{$id}}" data-num=0.015>1.5%</button>
+                <button type="button" class="btn_calc py-1 px-2 bg-gray-300 text-xs rounded" data-id="{{$id}}" data-num=0.02>2%</button>
+            </div>
         @endif
         @if (isset($desc))
             <br>

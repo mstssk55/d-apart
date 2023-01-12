@@ -11,6 +11,8 @@ class Project extends Model
     protected $dates = [
         'open_date',
         'start_date',
+        'return_debt_date',
+        'project_start_date',
         'structure_start_date',
         'structure_end_date',
         'debt_start_date',

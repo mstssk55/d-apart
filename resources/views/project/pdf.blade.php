@@ -41,7 +41,7 @@
         function m_tubo_conv($num){
             $tubo = 0;
             if($num > 0){
-                $tubo = round($num *0.3025,1);
+                $tubo = round($num *0.3025,2);
             }
             return $tubo;
         }
@@ -532,25 +532,29 @@
                                 </tr>
                                 <tr>
                                     <th rowspan="{{count($project->others)}}">その他雑費</th>
-                                    @php
-                                        $count=0;
-                                    @endphp
-                                    @foreach ($project->others as $other)
-                                        @if ($count >0)
-                                            <tr>
-                                        @endif
-                                            <td>
-                                                <span class="mr-2">{{$other->cycle}}</span>
-                                                <span class="mr-2">{{$other->name}}</span>
-                                                <span class="mr-2">{{$other->fee}}</span>
-                                            </td>
-                                        @if ($count >0)
-                                            <tr>
-                                        @endif
+                                    @if (count($project->others) >0)
                                         @php
-                                            $count ++;
+                                            $count=0;
                                         @endphp
-                                    @endforeach
+                                        @foreach ($project->others as $other)
+                                            @if ($count >0)
+                                                <tr>
+                                            @endif
+                                                <td>
+                                                    <span class="mr-2">{{$other->cycle}}</span>
+                                                    <span class="mr-2">{{$other->name}}</span>
+                                                    <span class="mr-1">{{$other->fee}}円</span>
+                                                </td>
+                                            @if ($count >0)
+                                                <tr>
+                                            @endif
+                                            @php
+                                                $count ++;
+                                            @endphp
+                                        @endforeach
+                                    @else
+                                    <td></td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <th>住宅総合保険</th>

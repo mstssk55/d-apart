@@ -71,6 +71,19 @@
                                         <table class="table-fixed w-full mb-3">
                                             <tbody class="">
                                                 @include('parts.project.bukken.col_1_input',['title'=>'タイトル','id'=>'name'])
+                                                <tr class="w-full">
+                                                    <th class="w-1/3 px-2 py-1 border text-left font-normal bg-gray-100">物件カテゴリ</th>
+                                                    <td class="w-2/3 border">
+                                                        <div class="flex items-center">
+                                                            <select name="project_cat" id="project_cat" class="border-none w-full bg-sky-50">
+                                                                <option value="">選択して下さい</option>
+                                                                <option value="A" {{$project->project_cat == "A" ? "selected" :""}}>A</option>
+                                                                <option value="B" {{$project->project_cat == "B" ? "selected" :""}}>B</option>
+                                                                <option value="C" {{$project->project_cat == "C" ? "selected" :""}}>C</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 @include('parts.project.bukken.col_1_input',['title'=>'物件番号','id'=>'project_type'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'顧客名','id'=>'client'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'館名','id'=>'house_name'])
@@ -94,8 +107,8 @@
                                                     </td>
                                                 </tr>
                                                 @include('parts.project.bukken.col_1_input',['title'=>'完成予定日','id'=>'open_date','type'=>'date'])
+                                                @include('parts.project.bukken.col_1_input',['title'=>'入居開始日','id'=>'project_start_date','type'=>'date'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'家賃送金開始日','id'=>'start_date','type'=>'date'])
-                                                @include('parts.project.bukken.col_1_input',['title'=>'事業開始日','id'=>'project_start_date','type'=>'date'])
                                                 @include('parts.project.bukken.col_1_input',['title'=>'銀行返済開始日','id'=>'return_debt_date','type'=>'date'])
                                             </tbody>
                                         </table>
@@ -254,6 +267,14 @@
                                                         $floor_total_num = 0;
                                                         $floor_total_area = 0;
                                                         $each_floor_total_num = [];
+                                                        foreach ($project->floors as $floor) {
+                                                            $floor_total_tenant_num += $floor->tenant_num;
+                                                            $floor_total_tenant_area += $floor->tenant_area;
+                                                            $floor_total_house_num += $floor->house_num;
+                                                            $floor_total_house_area += $floor->house_area;
+                                                            $floor_total_num += $floor->tenant_num + $floor->house_num;
+                                                            $floor_total_area += $floor->tenant_area + $floor->house_area;
+                                                        }
                                                         $yield_tax = 0;
                                                         $yield = 0;
                                                         $price_prop_tax =round($project->price_prop *0.1);
@@ -358,7 +379,7 @@
                                 <div class="flex mb-5">
                                     {{-- ~~~~~~~~~~~ 間取り ~~~~~~~~~~~ --}}
                                         <div class="w-1/2 mr-8">
-                                            @include('parts.project.h3',['title'=>'間取り'])
+                                            @include('parts.project.h3',['title'=>'建築面積'])
                                             @php
 
                                             @endphp
@@ -417,12 +438,12 @@
                                                                     }else{
                                                                         $num = $floor->floor."階";
                                                                     }
-                                                                    $floor_total_tenant_num += $floor->tenant_num;
-                                                                    $floor_total_tenant_area += $floor->tenant_area;
-                                                                    $floor_total_house_num += $floor->house_num;
-                                                                    $floor_total_house_area += $floor->house_area;
-                                                                    $floor_total_num += $floor->tenant_num + $floor->house_num;
-                                                                    $floor_total_area += $floor->tenant_area + $floor->house_area;
+                                                                    // $floor_total_tenant_num += $floor->tenant_num;
+                                                                    // $floor_total_tenant_area += $floor->tenant_area;
+                                                                    // $floor_total_house_num += $floor->house_num;
+                                                                    // $floor_total_house_area += $floor->house_area;
+                                                                    // $floor_total_num += $floor->tenant_num + $floor->house_num;
+                                                                    // $floor_total_area += $floor->tenant_area + $floor->house_area;
                                                                     array_push($each_floor_total_num,$floor->tenant_num+$floor->house_num)
                                                                 @endphp
                                                                 @include('parts.project.plan.plan',["head"=>$num,"count"=>$floor->floor,"val"=>$floor])
@@ -835,7 +856,7 @@
                                     </div>
                                     <div class="w-1/3">
                                         {{-- ~~~~~~~~~~~ 自己資金 ~~~~~~~~~~~ --}}
-                                            @include('parts.project.h3',['title'=>'自己資金'])
+                                            @include('parts.project.h3',['title'=>'資金計画'])
                                             <table class="table-fixed w-full mb-3">
                                                 <tbody class="">
                                                     @include('parts.project.gaiyou.col_1_input',['title'=>'借入額','id'=>'debt','unit'=>'円'])
@@ -982,7 +1003,7 @@
                                                         @include('parts.project.gaiyou.col_1_input',['title'=>'仲介料','id'=>'jigyuo_brokerage_fee','unit'=>'円','calc'=>0,'tax'=>"税",'desc'=>'（事前に土地代金の入力必須）'])
                                                         @include('parts.project.jigyou.col1',['title'=>'紹介料','id'=>'jigyuo_syoukai_fee','unit'=>'円'])
                                                         @include('parts.project.gaiyou.col_1_input',['title'=>'根抵当権設定料','id'=>'jigyuo_neteitou','unit'=>'円','calc'=>0,'desc'=>'（事前に借入金の入力必須）'])
-                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'登録免許税','id'=>'jigyuo_tourokumenkyo','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額入力必須）'])
+                                                        @include('parts.project.gaiyou.col_1_input',['title'=>'登録免許税','id'=>'jigyuo_tourokumenkyo','unit'=>'円','calc'=>2,'desc'=>'（事前に土地評価額入力必須）'])
                                                         @include('parts.project.gaiyou.col_1_input',['title'=>'不動産取得税','id'=>'jigyuo_fudousansyutoku','unit'=>'円','calc'=>0,'desc'=>'（事前に土地評価額、住宅用地特例措置の入力必須）'])
                                                         @include('parts.project.jigyou.col1',['title'=>'司法書士報酬','id'=>'jigyuo_sihousyosi','unit'=>'円','type'=>"税"])
                                                         @include('parts.project.jigyou.col1',['title'=>'銀行手数料・印紙','id'=>'jigyuo_ginkou_fee','unit'=>'円'])
@@ -1533,11 +1554,20 @@
             }
             return result
         }
+        // 土地所有権移転登記
+        function calc_menkyo(ratio){
+            let property_tax_area = document.getElementById('property_tax_area').value
+            property_tax_area = format_num(property_tax_area)
+            let result = floor_hundred(property_tax_area*ratio)
+            return result
+        }
+
         function calc_kotei(){
             let area_cost = document.getElementById('property_tax_area').value;
             const days = document.getElementById('debt_days').textContent;
             area_cost = format_num(area_cost)
-            let result = Math.round((area_cost * 0.014 + area_cost * 0.03)/365 * Number(days));
+            // let result = Math.round((area_cost * 0.014 + area_cost * 0.03)/365 * Number(days));
+            let result = Math.round((area_cost * 0.017)/365 * Number(days));
             return result
         }
 
@@ -1569,7 +1599,8 @@
                 set_val = calc_jigyou_neteitou()
                 set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_tourokumenkyo"){ // 登録免許税（事業計画）
-                set_val = calc_land_ownership_transfer()
+                const ratio = this.dataset.num
+                set_val = calc_menkyo(ratio)
                 set_area = document.getElementById(calc_area)
             }else if(calc_area == "jigyuo_fudousansyutoku"){ // 不動産取得税（事業計画）
                 set_val = calc_estate_tax_area()

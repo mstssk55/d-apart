@@ -230,6 +230,7 @@
                             <p class=" mr-3">{{$project->name}}</p>
 
                         </div>
+                        <p class="text-xs">物件番号：{{$project->project_cat."-".$project->project_type}}</p>
                         <p class="text-xs">作成者：{{$project->user->name}}</p>
                         <p class="text-xs">更新日：{{$project->updated_at}}</p>
                     </a>

@@ -13,10 +13,10 @@
     <td class="border w-2/3">
         <div class="flex">
             <div class="w-5/12 border-l border-gray-300">
-                <input type="date" id="{{$id}}_start_date" name="{{$id}}_start_date" value="{{$start_val}}" class="text-right border-none w-full bg-sky-50">
+                <input type="date" id="{{$id}}_start_date" name="{{$id}}_start_date" value="{{$start_val != null ? $start_val->format(config('const.format.input_date')) : ""}}" class="text-right border-none w-full bg-sky-50">
             </div>
             <div class="w-5/12 border-l border-gray-300">
-                <input type="date" id="{{$id}}_end_date" name="{{$id}}_end_date" value="{{$end_val}}" class="text-right border-none w-full bg-sky-50">
+                <input type="date" id="{{$id}}_end_date" name="{{$id}}_end_date" value="{{$end_val != null ? $end_val->format(config('const.format.input_date')) : ""}}" class="text-right border-none w-full bg-sky-50">
             </div>
             <div class="w-2/12 flex items-center border-l border-gray-300">
                 <p id="{{$id}}_days" class="text-right w-2/3">{{$diff->days + 1;}}</p>

@@ -45,7 +45,7 @@
                                         <p>{{Str::limit($project->property->name, 20)}}</p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs">
-                                        <p>{{$project->project_type}}</p>
+                                        <p>{{$project->project_cat."-".$project->project_type}}</p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs">
                                         <p>{{$project->created_at}}</p>

@@ -199,6 +199,7 @@ class ProjectController extends Controller
         // 収支計画基本情報-----------------------------------------
         $project->name = $request->name;
         $project->project_type = $request->project_type;
+        $project->project_cat = $request->project_cat;
         $project->client = $request->client;
         $project->manager = $request->manager;
         $project->house_name = $request->house_name;
