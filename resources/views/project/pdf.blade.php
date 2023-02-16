@@ -211,20 +211,26 @@
                                     @php
                                         $count=0;
                                     @endphp
-                                    @foreach ($project->property->stations as $station)
-                                        @if ($count >0)
-                                            <tr>
-                                        @endif
-                                            <td>{{$station->route}}</td>
-                                            <td>{{$station->station}}</td>
-                                            <td><span>徒歩</span>{{$station->time}} <span>分</span></td>
+                                    @if (count($project->property->stations)>0)
+                                        @foreach ($project->property->stations as $station)
                                             @if ($count >0)
-                                            <tr>
-                                        @endif
-                                        @php
-                                            $count ++;
-                                        @endphp
-                                    @endforeach
+                                                <tr>
+                                            @endif
+                                                <td>{{$station->route}}</td>
+                                                <td>{{$station->station}}</td>
+                                                <td><span>徒歩</span>{{$station->time}} <span>分</span></td>
+                                                @if ($count >0)
+                                                <tr>
+                                            @endif
+                                            @php
+                                                $count ++;
+                                            @endphp
+                                        @endforeach
+                                    @else
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <th>地積</th>
@@ -256,20 +262,26 @@
                                     @php
                                         $count=0;
                                     @endphp
-                                    @foreach ($project->property->roads as $road)
-                                        @if ($count >0)
-                                            <tr>
-                                        @endif
-                                            <td>{{$road->road_kind}}</td>
-                                            <td>{{$road->direction}}</td>
-                                            <td>{{$road->length}} <span>m</span></td>
+                                    @if (count($project->property->roads)>0)
+                                        @foreach ($project->property->roads as $road)
                                             @if ($count >0)
-                                            <tr>
-                                        @endif
-                                        @php
-                                            $count ++;
-                                        @endphp
-                                    @endforeach
+                                                <tr>
+                                            @endif
+                                                <td>{{$road->road_kind}}</td>
+                                                <td>{{$road->direction}}</td>
+                                                <td>{{$road->length}} <span>m</span></td>
+                                                @if ($count >0)
+                                                <tr>
+                                            @endif
+                                            @php
+                                                $count ++;
+                                            @endphp
+                                        @endforeach
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <th>備考</th>
@@ -309,19 +321,24 @@
                                     @php
                                         $count=0;
                                     @endphp
-                                    @foreach ($project->parkings as $parking)
-                                        @if ($count >0)
-                                            <tr>
-                                        @endif
-                                            <td>{{$parking->plan}}</td>
-                                            <td>{{$parking->count}} <span>台分</span></td>
+                                    @if (count($project->parkings)>0)
+                                        @foreach ($project->parkings as $parking)
                                             @if ($count >0)
-                                            <tr>
-                                        @endif
-                                        @php
-                                            $count ++;
-                                        @endphp
-                                    @endforeach
+                                                <tr>
+                                            @endif
+                                                <td>{{$parking->plan}}</td>
+                                                <td>{{$parking->count}} <span>台分</span></td>
+                                                @if ($count >0)
+                                                <tr>
+                                            @endif
+                                            @php
+                                                $count ++;
+                                            @endphp
+                                        @endforeach
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <th>構造</th>
@@ -593,15 +610,25 @@
                                 <th class="w-3/12">管理費</th>
                             </thead>
                             <tbody>
-                                @foreach ($project->rooms as $room)
-                                <tr>
-                                    <td>{{$room->room_no}}</td>
-                                    <td>{{$room->room_plan}}</td>
-                                    <td class="table_right">{{number_format($room->room_area,2)}}</td>
-                                    <td class="table_right">{{number_format($room->room_rent)}}</td>
-                                    <td class="table_right">{{number_format($room->room_common)}}</td>
-                                </tr>
-                                @endforeach
+                                @if (count($project->rooms)>0)
+                                    @foreach ($project->rooms as $room)
+                                    <tr>
+                                        <td>{{$room->room_no}}</td>
+                                        <td>{{$room->room_plan}}</td>
+                                        <td class="table_right">{{number_format($room->room_area,2)}}</td>
+                                        <td class="table_right">{{number_format($room->room_rent)}}</td>
+                                        <td class="table_right">{{number_format($room->room_common)}}</td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                         <h3>駐車料</h3>
@@ -613,14 +640,23 @@
                                 <th class="w-2/5">小計</th>
                             </thead>
                             <tbody>
-                                @foreach ($project->parkings as $parking)
-                                <tr>
-                                    <td>{{$parking->plan}}</td>
-                                    <td class="table_right">{{$parking->count}}</td>
-                                    <td class="table_right">{{number_format($parking->fee)}}</td>
-                                    <td class="table_right">{{number_format($parking->fee * $parking->count)}}</td>
-                                </tr>
-                                @endforeach
+                                @if (count($project->parkings)>0)
+                                    @foreach ($project->parkings as $parking)
+                                    <tr>
+                                        <td>{{$parking->plan}}</td>
+                                        <td class="table_right">{{$parking->count}}</td>
+                                        <td class="table_right">{{number_format($parking->fee)}}</td>
+                                        <td class="table_right">{{number_format($parking->fee * $parking->count)}}</td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
