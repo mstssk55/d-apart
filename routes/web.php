@@ -147,6 +147,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user', [KanrisController::class, 'kanri'])
     ->name('kanri');
 
+    //ユーザー削除
+    Route::post('/user/delete/{id}', [KanrisController::class, 'userDelete'])
+    ->name('userDelete');
+
+    //ユーザー登録
+    Route::post('/user/store', [KanrisController::class, 'store'])
+    ->name('userStore');
 
 
 

@@ -139,7 +139,7 @@ class ProjectController extends Controller
     {
         //
         $project = Project::find($id);
-        $users = User::get();
+        $users = User::where('is_delete',0)->get();
         $crs = Construction::get();
         $layouts = Layout::get();
         $banks = Bank::get();

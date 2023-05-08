@@ -21,11 +21,14 @@
                     <x-nav-link :href="route('projectList')" :active="request()->routeIs('projectList')">
                         {{ __('収支一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('setting')" :active="request()->routeIs('setting')">
-                        {{ __('設定') }}
-                    </x-nav-link>
-
-
+                    @if (Auth::user()->is_admin === 1)
+                        <x-nav-link :href="route('setting')" :active="request()->routeIs('setting')">
+                            {{ __('設定') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('kanri')" :active="request()->routeIs('kanri')">
+                            {{ __('ユーザー管理') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
