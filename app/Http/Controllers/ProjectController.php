@@ -575,6 +575,12 @@ class ProjectController extends Controller
     public function destroy(Project $id)
     {
         //
+        Floor::where("project_id",$id->id)->delete();
+        Bikou::where("project_id",$id->id)->delete();
+        Other::where("project_id",$id->id)->delete();
+        Parking::where("project_id",$id->id)->delete();
+        Plan::where("project_id",$id->id)->delete();
+        Room::where("project_id",$id->id)->delete();
         $id->delete();
         return redirect()->route('projectList');
 
