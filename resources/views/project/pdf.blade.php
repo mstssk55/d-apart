@@ -130,7 +130,9 @@
         $jigyou_total_area_fee_tax += round($project->jigyuo_brokerage_fee*0.1);
         $jigyou_total_area_fee_tax += round($project->jigyuo_sihousyosi*0.1);
         $jigyou_total_area_fee_tax += round($project->jigyuo_kaitai_fee*0.1);
-        $jigyou_total_area_fee_tax += $jigyou_total_area_fee-$project->jigyuo_ginkou_fee;
+        // 20240813修正
+        // $jigyou_total_area_fee_tax += $jigyou_total_area_fee-$project->jigyuo_ginkou_fee;
+        $jigyou_total_area_fee_tax += $jigyou_total_area_fee;
 
 
         $jigyou_total_prop_fee = 0;
