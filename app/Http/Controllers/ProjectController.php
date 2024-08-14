@@ -414,12 +414,32 @@ class ProjectController extends Controller
         $project->earthquake_insurance_cost = $request->earthquake_insurance_cost;
 
         // 減価償却-----------------------------------------
+        $calc_building_depreciation_ratio = $request->building_depreciation_ratio;
+        $calc_equipment_depreciation_ratio = $request->equipment_depreciation_ratio;
+
+        if($request->building_depreciation_kind == "定額法"){
+            // $calc_building_depreciation_ratio = teigaku()[$request->building_depreciation_year - 2];
+            $calc_building_depreciation_ratio = config('const.teigaku')[$request->building_depreciation_year - 2];
+
+        }else{
+            // $calc_building_depreciation_ratio = teiritu()[$request->building_depreciation_year - 3];
+            $calc_building_depreciation_ratio = config('const.teiritu')[$request->building_depreciation_year - 3];
+
+        }
+        if($request->equipment_depreciation_kind == "定額法"){
+            // $calc_equipment_depreciation_ratio = teigaku()[$request->equipment_depreciation_year - 2];
+            $calc_equipment_depreciation_ratio = config('const.teigaku')[$request->equipment_depreciation_year - 2];
+        }else{
+            // $calc_equipment_depreciation_ratio = teiritu()[$request->equipment_depreciation_year - 3];
+            $calc_equipment_depreciation_ratio = config('const.teiritu')[$request->equipment_depreciation_year - 3];
+        }
+
         $project->building_depreciation_kind =  $request->building_depreciation_kind;
         $project->building_depreciation_year = $request->building_depreciation_year;
-        $project->building_depreciation_ratio = $request->building_depreciation_ratio;
+        $project->building_depreciation_ratio = $calc_building_depreciation_ratio;
         $project->equipment_depreciation_kind =  $request->equipment_depreciation_kind;
         $project->equipment_depreciation_year = $request->equipment_depreciation_year;
-        $project->equipment_depreciation_ratio = $request->equipment_depreciation_ratio;
+        $project->equipment_depreciation_ratio = $calc_equipment_depreciation_ratio;
         $project->equipment_ratio = $request->equipment_ratio;
 
         // 賃金、借入金内訳-----------------------------------------
