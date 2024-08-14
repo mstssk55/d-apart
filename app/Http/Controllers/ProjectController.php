@@ -419,19 +419,26 @@ class ProjectController extends Controller
 
         if($request->building_depreciation_kind == "定額法"){
             // $calc_building_depreciation_ratio = teigaku()[$request->building_depreciation_year - 2];
-            $calc_building_depreciation_ratio = config('const.teigaku')[$request->building_depreciation_year - 2];
-
+            if($request->building_depreciation_year > 2){
+                $calc_building_depreciation_ratio = config('const.teigaku')[$request->building_depreciation_year - 2];
+            }
         }else{
             // $calc_building_depreciation_ratio = teiritu()[$request->building_depreciation_year - 3];
-            $calc_building_depreciation_ratio = config('const.teiritu')[$request->building_depreciation_year - 3];
+            if($request->building_depreciation_year > 3){
+                $calc_building_depreciation_ratio = config('const.teiritu')[$request->building_depreciation_year - 3];
+            }
 
         }
         if($request->equipment_depreciation_kind == "定額法"){
             // $calc_equipment_depreciation_ratio = teigaku()[$request->equipment_depreciation_year - 2];
-            $calc_equipment_depreciation_ratio = config('const.teigaku')[$request->equipment_depreciation_year - 2];
+            if($request->equipment_depreciation_year > 2){
+                $calc_equipment_depreciation_ratio = config('const.teigaku')[$request->equipment_depreciation_year - 2];
+            }
         }else{
             // $calc_equipment_depreciation_ratio = teiritu()[$request->equipment_depreciation_year - 3];
-            $calc_equipment_depreciation_ratio = config('const.teiritu')[$request->equipment_depreciation_year - 3];
+            if($request->equipment_depreciation_year > 3){
+                $calc_equipment_depreciation_ratio = config('const.teiritu')[$request->equipment_depreciation_year - 3];
+            }
         }
 
         $project->building_depreciation_kind =  $request->building_depreciation_kind;
