@@ -9,14 +9,22 @@
     $prop_syoukyaku = 0;
     $equip_syoukyaku = 0;
     if($project->building_depreciation_kind == "定額法"){
-        $prop_syoukyaku = teigaku()[$project->building_depreciation_year - 2];
+        if($project->building_depreciation_year>2){
+            $prop_syoukyaku = teigaku()[$project->building_depreciation_year - 2];
+        }
     }else{
-        $prop_syoukyaku = teiritu()[$project->building_depreciation_year - 3];
+        if($project->building_depreciation_year>3){
+            $prop_syoukyaku = teiritu()[$project->building_depreciation_year - 3];
+        }
     }
     if($project->equipment_depreciation_kind == "定額法"){
-        $equip_syoukyaku = teigaku()[$project->equipment_depreciation_year - 2];
+        if($project->equipment_depreciation_year>2){
+            $equip_syoukyaku = teigaku()[$project->equipment_depreciation_year - 2];
+        }
     }else{
-        $equip_syoukyaku = teiritu()[$project->equipment_depreciation_year - 3];
+        if($project->equipment_depreciation_year>3){
+            $equip_syoukyaku = teiritu()[$project->equipment_depreciation_year - 3];
+        }
     }
 @endphp
     <style>
