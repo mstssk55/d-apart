@@ -1009,7 +1009,7 @@
                     $val = $item;
                     if($zan < $item && $zan > 0){
                         $val = $zan;
-                    }elseif($zan == 0){
+                    }elseif($zan >= -1){
                         $val = 0;
                     }
                     return $val;
@@ -1051,7 +1051,7 @@
                         $furikomi_y = roop_val($project->transfer_fee * 12,$roop);
                         $koteisisan_m = roop_val($project->property_tax,$roop);
                         $toshikeikaku_m = roop_val($project->city_planning_tax,$roop);
-                        $genka_p = roop_val(round($project->building_depreciation_ratio * $prop_price),$roop);
+                        $genka_p = roop_val($project->building_depreciation_ratio * $prop_price,$roop);
                         $genka_e = roop_val($project->equipment_depreciation_ratio * $equipment_price,$roop);
                         $hoken_h = hoken("housing_insurance",$project,$roop);
                         $hoken_e = hoken("earthquake_insurance",$project,$roop);
