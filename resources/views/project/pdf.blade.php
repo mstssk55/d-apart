@@ -1009,7 +1009,7 @@
                     $val = $item;
                     if($zan < $item && $zan > 0){
                         $val = $zan;
-                    }elseif($zan >= -1){
+                    }elseif(round($zan) == 0){
                         $val = 0;
                     }
                     return $val;
