@@ -421,13 +421,16 @@
                                     <td colspan="2"><span class="mr-3">(内消費税)</span>{{number_format($price_prop_tax)}}<span>円</span></td>
                                 </tr>
                                 <tr>
-                                    <th rowspan="2">合計</th>
-                                    <td rowspan="2">{{number_format($total_price)}}<span>円</span></td>
-                                    <th rowspan="2">利回り</th>
-                                    <td>{{round($rimawari_tax,2)}}<span>%(税込)</span></td>
+                                    <th>合計（税抜）</th>
+                                    <td>{{number_format($project->price_prop)}}<span>円</span></td>
+                                    <th>利回り</th>
+                                    <td>{{round($rimawari,2)}}<span>%(税抜)</span></td>
                                 </tr>
                                 <tr>
-                                    <td>{{round($rimawari,2)}}<span>%(税抜)</span></td>
+                                    <th>合計（税込）</th>
+                                    <td>{{number_format($total_price)}}<span>円</span></td>
+                                    <th>利回り</th>
+                                    <td>{{round($rimawari_tax,2)}}<span>%(税込)</span></td>
                                 </tr>
                             </tbody>
                         </table>
